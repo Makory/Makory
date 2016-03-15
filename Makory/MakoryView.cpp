@@ -12,6 +12,10 @@
 #include "MakoryDoc.h"
 #include "MakoryView.h"
 
+#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -48,7 +52,7 @@ BOOL CMakoryView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMakoryView 그리기
 
-void CMakoryView::OnDraw(CDC* /*pDC*/)
+void CMakoryView::OnDraw(CDC* pDC)
 {
 	CMakoryDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -56,6 +60,9 @@ void CMakoryView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	CString str;
+	str.Format("hello world");
+	pDC -> TextOutA(100,50,str);
 }
 
 void CMakoryView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -94,3 +101,16 @@ CMakoryDoc* CMakoryView::GetDocument() const // 디버그되지 않은 버전은 인라인으�
 
 
 // CMakoryView 메시지 처리기
+
+/*
+void CMakoryView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	CMakoryDoc* pDoc = GetDocument();
+	GLfloat x, y;
+	
+	x=point.x/width*(gl_right-gl_left)+gl_left;
+	y=(height-point.y)/height*(gl_top-gl_bottom)+gl_bottom;
+
+	CView::OnLButtonDown(nFlags,point);
+}
+*/
