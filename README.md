@@ -7,6 +7,7 @@ Make와 Memory의 합성어로 사진 속의 기억들을 영상으로 다시 �
 만들어진 동영상은 실제 동영상 파일로 추출 가능해야 함
 
 You will need to add a file in 'Makory' folder, such as:
+
 opencv_world300.dll
 opencv_world300d.dll
 
