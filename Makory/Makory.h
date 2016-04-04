@@ -8,7 +8,7 @@
 #endif
 
 #include "resource.h"       // 주 기호입니다.
-
+#include "TimelineCtrl.h"
 
 // CMakoryApp:
 // 이 클래스의 구현에 대해서는 Makory.cpp을 참조하십시오.
@@ -19,13 +19,15 @@ class CMakoryApp : public CWinAppEx
 public:
 	CMakoryApp();
 
+	void RegisterTimelineWnd(CTimelineCtrl* timelineWnd);
+	CTimelineCtrl* GetTimelineWnd() const;
 
 // 재정의입니다.
 public:
 	virtual BOOL InitInstance();
+	virtual int ExitInstance();
 
 // 구현입니다.
-	UINT  m_nAppLook;
 	BOOL  m_bHiColorIcons;
 
 	virtual void PreLoadState();
@@ -34,6 +36,9 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+
+private:
+	CTimelineCtrl* mTimelineWnd;
 };
 
 extern CMakoryApp theApp;

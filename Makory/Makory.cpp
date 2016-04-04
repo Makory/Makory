@@ -11,10 +11,6 @@
 #include "MakoryDoc.h"
 #include "MakoryView.h"
 
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -27,10 +23,23 @@ BEGIN_MESSAGE_MAP(CMakoryApp, CWinAppEx)
 	// 표준 파일을 기초로 하는 문서 명령입니다.
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	// 표준 인쇄 설정 명령입니다.
+	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 
 // CMakoryApp 생성
+void CMakoryApp::RegisterTimelineWnd(CTimelineCtrl* timelineWnd)
+{
+	mTimelineWnd = timelineWnd;
+
+
+}
+
+CTimelineCtrl* CMakoryApp::GetTimelineWnd() const
+{
+	return mTimelineWnd;
+}
 
 CMakoryApp::CMakoryApp()
 {
@@ -56,17 +65,39 @@ CMakoryApp::CMakoryApp()
 // 유일한 CMakoryApp 개체입니다.
 
 CMakoryApp theApp;
-
+static ULONG_PTR gsGdiplusToken;
 
 // CMakoryApp 초기화
 
 BOOL CMakoryApp::InitInstance()
 {
+	// 응용 프로그램 매니페스트가 ComCtl32.dll 버전 6 이상을 사용하여 비주얼 스타일을
+	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다. 
+	// InitCommonControlsEx()를 사용하지 않으면 창을 만들 수 없습니다.
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	// 응용 프로그램에서 사용할 모든 공용 컨트롤 클래스를 포함하도록
+	// 이 항목을 설정하십시오.
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls);
+
 	CWinAppEx::InitInstance();
 
 
+	// OLE 라이브러리를 초기화합니다.
+	if (!AfxOleInit())
+	{
+		AfxMessageBox(IDP_OLE_INIT_FAILED);
+		return FALSE;
+	}
+
+	AfxEnableControlContainer();
+
 	EnableTaskbarInteraction(FALSE);
 
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&gsGdiplusToken, &gdiplusStartupInput, NULL);
+	
 	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.	
 	// AfxInitRichEdit2();
 
@@ -121,6 +152,15 @@ BOOL CMakoryApp::InitInstance()
 	// 접미사가 있을 경우에만 DragAcceptFiles를 호출합니다.
 	//  SDI 응용 프로그램에서는 ProcessShellCommand 후에 이러한 호출이 발생해야 합니다.
 	return TRUE;
+}
+
+int CMakoryApp::ExitInstance()
+{
+	Gdiplus::GdiplusShutdown(gsGdiplusToken);
+
+	AfxOleTerm(FALSE);
+
+	return CWinAppEx::ExitInstance();
 }
 
 // CMakoryApp 메시지 처리기

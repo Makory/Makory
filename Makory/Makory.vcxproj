@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E9C8D192-B82F-4EC7-9F8D-276BF2A80F11}</ProjectGuid>
+    <ProjectGuid>{5E099A03-A3C4-48A7-9FFB-F5D130F212DE}</ProjectGuid>
     <RootNamespace>Makory</RootNamespace>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -51,13 +51,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(OPENCV_DIR)\include\opencv;$(OPENCV_DIR)\include\opencv2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;opencv_world300d.lib;opencv_ts300d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\x64\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\x86\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;glaux.lib;opencv_ts300d.lib;opencv_world300d.lib;opencv_ts300.lib;opencv_world300.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -78,15 +78,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(OPENCV_DIR)\include\opencv;$(OPENCV_DIR)\include\opencv2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\x64\vc12\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glut32.lib;glu32.lib;opencv_ts300.lib;opencv_world300.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\x86\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;glaux.lib;opencv_ts300d.lib;opencv_world300d.lib;opencv_ts300.lib;opencv_world300.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -109,15 +109,37 @@
     <None Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BmpToArray.h" />
+    <ClInclude Include="EditorCtrl.h" />
+    <ClInclude Include="EditorPane.h" />
+    <ClInclude Include="EdittapCtrl.h" />
+    <ClInclude Include="HotAirBalloon.h" />
+    <ClInclude Include="ImageCtrl.h" />
+    <ClInclude Include="Imagelist.h" />
+    <ClInclude Include="ImageTimelineCtrl.h" />
+    <ClInclude Include="LoadbuttonCtrl.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Makory.h" />
     <ClInclude Include="MakoryDoc.h" />
     <ClInclude Include="MakoryView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TapCtrl.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TemplateCtrl.h" />
+    <ClInclude Include="TimelineCtrl.h" />
+    <ClInclude Include="TimelinePane.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BmpToArray.cpp" />
+    <ClCompile Include="EditorCtrl.cpp" />
+    <ClCompile Include="EditorPane.cpp" />
+    <ClCompile Include="EdittapCtrl.cpp" />
+    <ClCompile Include="HotAirBalloon.cpp" />
+    <ClCompile Include="ImageCtrl.cpp" />
+    <ClCompile Include="Imagelist.cpp" />
+    <ClCompile Include="ImageTimelineCtrl.cpp" />
+    <ClCompile Include="LoadbuttonCtrl.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Makory.cpp" />
     <ClCompile Include="MakoryDoc.cpp" />
@@ -126,6 +148,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TapCtrl.cpp" />
+    <ClCompile Include="TemplateCtrl.cpp" />
+    <ClCompile Include="TimelineCtrl.cpp" />
+    <ClCompile Include="TimelinePane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Makory.rc" />
@@ -133,4 +159,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="Makory.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
