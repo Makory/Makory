@@ -20,9 +20,13 @@ CTimelineCtrl::~CTimelineCtrl()
 {
 }
 
-void CTimelineCtrl::AddImage(const std::string& path)
+void CTimelineCtrl::AddImage(int index, const std::string& path)
 {
-	m_ctrlImageTimeline.AddThumbnail(path);
+	m_ctrlImageTimeline.AddImgThumbnail(index, path);
+}
+void CTimelineCtrl::AddTemplate(CString index, const std::string& path)
+{
+	m_ctrlImageTimeline.AddTempThumbnail(index, path);
 }
 
 void CTimelineCtrl::DoDataExchange(CDataExchange* pDX)

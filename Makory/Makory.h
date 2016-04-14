@@ -30,6 +30,7 @@ public:
 // 구현입니다.
 	BOOL  m_bHiColorIcons;
 
+
 	virtual void PreLoadState();
 	virtual void LoadCustomState();
 	virtual void SaveCustomState();

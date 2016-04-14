@@ -6,6 +6,7 @@
 
 #include "HotAirBalloon.h"
 #include "BmpToArray.h"
+#include "ImageTimelineCtrl.h"
 
 class CMakoryView : public CView
 {
@@ -22,7 +23,7 @@ public:
 	void InitGL();
 	void ReSizeGLScene(GLsizei width, GLsizei height);
 	void CMakoryView::DrawGLTitle();
-	void CMakoryView::DrawGLScene();
+	void CMakoryView::DrawGLScene(int SelectSky);
 	BOOL SetPixelformat(HDC hdc);
 
 	// 카메라 변수 설정:
@@ -37,9 +38,11 @@ public:
 	GLfloat leftVec[3];
 	void LeftVec();
 
-	HotAirBalloon* HotAirBalloon;
-	BmpToArray* BmpToArray;
-
+	HotAirBalloon HotAirBalloon;
+	BmpToArray BmpToArray;
+	CImageTimelineCtrl* ImageTimeline;
+	
+	int SelectTemplate;
 
 // 특성입니다.
 public:

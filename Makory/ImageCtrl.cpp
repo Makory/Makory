@@ -73,9 +73,6 @@ void CImageCtrl::OnBnClickedLoadButton()
 			MessageBox("잘못된 폴더명입니다.", "", MB_OKCANCEL|MB_ICONASTERISK );
 		}
 	}
-	
-
-
 }
 
 
@@ -96,8 +93,9 @@ void CImageCtrl::OnDblclkImagelist(NMHDR *pNMHDR, LRESULT *pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	int index = pNMItemActivate->iItem; // 클릭한 아이템의 인덱스 얻어옴
 
-	std::string path(m_ctrlImagelist.GetPathFor(index));
-	theApp.GetTimelineWnd()->AddImage(path);
+	std::string path(m_ctrlImagelist.GetImagePathFor(index));
+	
+	theApp.GetTimelineWnd()->AddImage(index, path);
 
 	*pResult = 0;
 }

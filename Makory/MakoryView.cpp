@@ -54,7 +54,8 @@ CMakoryView::CMakoryView()
 	upVec[0]=0.f;
 	upVec[1]=1.f;
 	upVec[2]=0.f;
-
+	
+	SelectTemplate=0;
 }
 
 CMakoryView::~CMakoryView()
@@ -73,7 +74,7 @@ BOOL CMakoryView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CMakoryView::OnDraw(CDC* /*pDC*/)
 {
-	int SelectTemplate=1;
+	//SelectTemplate=ImageTimeline->NonTitle;
 	CMakoryDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
@@ -82,9 +83,9 @@ void CMakoryView::OnDraw(CDC* /*pDC*/)
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 	
 	if(SelectTemplate==0) {
-	DrawGLTitle();		//처음 실행시 타이틀 이미지 보여짐
-	} else if(SelectTemplate==1) {
-		DrawGLScene();		//선택시 템플릿 보여짐
+		DrawGLTitle();		//처음 실행시 타이틀 이미지 보여짐
+	} else {
+		DrawGLScene(SelectTemplate);		//선택시 템플릿 보여짐
 	}
 }
 
@@ -253,7 +254,7 @@ CMakoryDoc* CMakoryView::GetDocument() const // 디버그되지 않은 버전은 인라인으�
 
 		// draw 
 
-			BmpToArray->LoadBmp("space/Title_Image.bmp");
+			BmpToArray.LoadBmp("space/Title_Image.bmp");
 
 	glEnable(GL_TEXTURE_2D);
 	glMatrixMode(GL_MODELVIEW);
@@ -293,7 +294,7 @@ CMakoryDoc* CMakoryView::GetDocument() const // 디버그되지 않은 버전은 인라인으�
 	}
 
 
-	void CMakoryView::DrawGLScene() 
+	void CMakoryView::DrawGLScene(int SelectSky) 
 	{
 		//--------------------OpenCV---------------------
 		int _width = 400;
@@ -329,99 +330,99 @@ CMakoryDoc* CMakoryView::GetDocument() const // 디버그되지 않은 버전은 인라인으�
 			ThickCloudsWater : 6
 			TropicalSunnyDay : 7
 		------------------------------------*/
-		int SelectSky=1;		//하늘 선택
+				//하늘 선택
 
 		if(SelectSky==1) {
-			BmpToArray->LoadBmp("space/CloudyLightRays/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/CloudyLightRays/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/CloudyLightRays/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/CloudyLightRays/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/CloudyLightRays/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/CloudyLightRays/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/CloudyLightRays/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/CloudyLightRays/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/CloudyLightRays/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/CloudyLightRays/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/CloudyLightRays/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/CloudyLightRays/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==2) {
-			BmpToArray->LoadBmp("space/DarkStormy/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/DarkStormy/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/DarkStormy/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/DarkStormy/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/DarkStormy/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/DarkStormy/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/DarkStormy/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/DarkStormy/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/DarkStormy/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/DarkStormy/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/DarkStormy/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/DarkStormy/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==3) {
-			BmpToArray->LoadBmp("space/FullMoon/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/FullMoon/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/FullMoon/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/FullMoon/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/FullMoon/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/FullMoon/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/FullMoon/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/FullMoon/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/FullMoon/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/FullMoon/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/FullMoon/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/FullMoon/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==4) {
-			BmpToArray->LoadBmp("space/Mountain/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/Mountain/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/Mountain/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/Mountain/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/Mountain/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/Mountain/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/Mountain/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/Mountain/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/Mountain/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/Mountain/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/Mountain/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/Mountain/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==5) {
-			BmpToArray->LoadBmp("space/SunSet/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/SunSet/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/SunSet/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/SunSet/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/SunSet/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/SunSet/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/SunSet/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/SunSet/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/SunSet/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/SunSet/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/SunSet/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/SunSet/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==6) {
-			BmpToArray->LoadBmp("space/ThickCloudsWater/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/ThickCloudsWater/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/ThickCloudsWater/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/ThickCloudsWater/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/ThickCloudsWater/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/ThickCloudsWater/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/ThickCloudsWater/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else if(SelectSky==7) {
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/front.bmp");
-			HotAirBalloon->drawSkyboxfront();
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/back.bmp");
-			HotAirBalloon->drawSkyboxback();
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/left.bmp");
-			HotAirBalloon->drawSkyboxleft();
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/right.bmp");
-			HotAirBalloon->drawSkyboxright();
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/up.bmp");
-			HotAirBalloon->drawSkyboxup();
-			BmpToArray->LoadBmp("space/TropicalSunnyDay/down.bmp");
-			HotAirBalloon->drawSkyboxdown();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/front.bmp");
+			HotAirBalloon.drawSkyboxfront();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/back.bmp");
+			HotAirBalloon.drawSkyboxback();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/left.bmp");
+			HotAirBalloon.drawSkyboxleft();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/right.bmp");
+			HotAirBalloon.drawSkyboxright();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/up.bmp");
+			HotAirBalloon.drawSkyboxup();
+			BmpToArray.LoadBmp("space/TropicalSunnyDay/down.bmp");
+			HotAirBalloon.drawSkyboxdown();
 		} else {
 			AfxMessageBox("잘못된 접근입니다.");
 		}

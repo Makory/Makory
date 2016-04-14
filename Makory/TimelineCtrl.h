@@ -12,7 +12,8 @@ public:
 	CTimelineCtrl(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CTimelineCtrl();
 
-	void AddImage(const std::string& path);
+	void AddImage(int index, const std::string& path);
+	void AddTemplate(CString index, const std::string& path);
 
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_DIALOG_TIMELINE };

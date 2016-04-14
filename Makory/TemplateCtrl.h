@@ -1,5 +1,6 @@
 #pragma once
 #include "afxcmn.h"
+#include "imagelist.h"
 
 
 // CTemplateCtrl 대화 상자입니다.
@@ -24,5 +25,7 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDblclkTree(NMHDR *pNMHDR, LRESULT *pResult);
 	int SelectTemplate2;
+	std::string GetTemplatePathFor(std::string index) const;
+	CImagelist m_ctrlImagelist;
 
 };

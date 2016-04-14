@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "Makory.h"
 #include "ImageTimelineCtrl.h"
+#include "MainFrm.h"
+#include "MakoryDoc.h"
+#include "MakoryView.h"
 
 using namespace Gdiplus;
 
@@ -15,32 +18,41 @@ IMPLEMENT_DYNAMIC(CImageTimelineCtrl, CWnd)
 
 CImageTimelineCtrl::CImageTimelineCtrl()
 {
-	mHitUserItem = -1;
 	mHitTemplateItem = -1;
+	mHitUserItem = -1;
+	NonTitle=0;
 }
 
 CImageTimelineCtrl::~CImageTimelineCtrl()
 {
 }
 
-void CImageTimelineCtrl::AddThumbnail(const std::string& path)
+void CImageTimelineCtrl::AddTempThumbnail(CString index, const std::string& path)
 {
 	USES_CONVERSION;
 	Bitmap* thumbnail = new Bitmap(A2W(path.c_str()));
-	if (mUserImages.size())
-	{
-		ImageItem item;
-		item.path = path;
-		item.bitmap = thumbnail;
-		mTemplateImages.push_back(item);
-	}
-	else
-	{
-		ImageItem item;
-		item.path = path;
-		item.bitmap = thumbnail;
-		mUserImages.push_back(item);
-	}
+
+	TemplateItem temp;
+	temp.index=index;
+	temp.path = path;
+	temp.bitmap = thumbnail;
+	mTemplateImages.push_back(temp);
+
+	UpdateScrollParameters();
+
+	Invalidate();
+}
+
+void CImageTimelineCtrl::AddImgThumbnail(int index, const std::string& path)
+{
+	USES_CONVERSION;
+	Bitmap* thumbnail = new Bitmap(A2W(path.c_str()));
+
+	ImageItem item;
+	item.index=index;
+	item.path = path;
+	item.bitmap = thumbnail;
+	mUserImages.push_back(item);
 
 	UpdateScrollParameters();
 
@@ -55,6 +67,7 @@ BEGIN_MESSAGE_MAP(CImageTimelineCtrl, CWnd)
 	ON_WM_PAINT()
 	ON_WM_HSCROLL()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 
 int CImageTimelineCtrl::OnCreate(CREATESTRUCT* createStruct)
@@ -66,15 +79,15 @@ int CImageTimelineCtrl::OnCreate(CREATESTRUCT* createStruct)
 
 void CImageTimelineCtrl::OnDestroy()
 {
-	int numImages = (int)mUserImages.size();
-	for (int i = 0; i < numImages; ++i)
-	{
-		delete mUserImages[i].bitmap;
-	}
-	numImages = (int)mTemplateImages.size();
+	int numImages = (int)mTemplateImages.size();
 	for (int i = 0; i < numImages; ++i)
 	{
 		delete mTemplateImages[i].bitmap;
+	}
+	numImages = (int)mUserImages.size();
+	for (int i = 0; i < numImages; ++i)
+	{
+		delete mUserImages[i].bitmap;
 	}
 
 	CWnd::OnDestroy();
@@ -86,7 +99,7 @@ void CImageTimelineCtrl::UpdateScrollParameters()
 	GetClientRect(&clientRect);
 	int viewWidth = clientRect.Width();
 
-	int maxNum = std::max((int)mUserImages.size(), (int)mTemplateImages.size());
+	int maxNum = std::max((int)mTemplateImages.size(), (int)mUserImages.size());
 	int widthPerItem = FIXED_WIDTH + ICON_MARGIN;
 	int worldWidth = widthPerItem * maxNum;
 	SCROLLINFO scrollInfo;
@@ -136,12 +149,13 @@ void CImageTimelineCtrl::OnHScroll(UINT scrollCode, UINT, CScrollBar*)
 
 void CImageTimelineCtrl::OnLButtonDown(UINT, CPoint point)		//왼쪽 클릭시 다시그리기
 {
+	
 	Invalidate();
 
 	CRect itemRect;
 
-	mHitUserItem = -1;
 	mHitTemplateItem = -1;
+	mHitUserItem = -1;
 
 	CRect rect;
 	GetClientRect(&rect);
@@ -155,12 +169,12 @@ void CImageTimelineCtrl::OnLButtonDown(UINT, CPoint point)		//왼쪽 클릭시 다시그
 	itemRect.right = itemRect.left + FIXED_WIDTH;
 	itemRect.bottom = itemRect.top + halfHeight;
 
-	int numImages = (int)mUserImages.size();
+	int numImages = (int)mTemplateImages.size();
 	for (int i = 0; i < numImages; ++i)
 	{
 		if (itemRect.PtInRect(point))
 		{
-			mHitUserItem = i;
+			mHitTemplateItem = i;
 			return;
 		}
 
@@ -172,12 +186,12 @@ void CImageTimelineCtrl::OnLButtonDown(UINT, CPoint point)		//왼쪽 클릭시 다시그
 	itemRect.right = itemRect.left + FIXED_WIDTH;
 	itemRect.bottom = itemRect.top + halfHeight;
 
-	numImages = (int)mTemplateImages.size();
+	numImages = (int)mUserImages.size();
 	for (int i = 0; i < numImages; ++i)
 	{
 		if (itemRect.PtInRect(point))
 		{
-			mHitTemplateItem = i;
+			mHitUserItem = i;
 			return;
 		}
 
@@ -229,24 +243,25 @@ void CImageTimelineCtrl::OnPaint()
 		imageRect.Width = halfHeight/3*4;
 		FIXED_WIDTH=imageRect.Width;
 
-		int numImages = (int)mUserImages.size();
+		int numImages = (int)mTemplateImages.size();
 		for (int i = 0; i < numImages; ++i)
 		{
-			Bitmap* bitmap = mUserImages[i].bitmap;
+			Bitmap* bitmap = mTemplateImages[i].bitmap;
+
 			graphics.DrawImage(bitmap, imageRect);
 
-			if (i == mHitUserItem)
+			if (i == mHitTemplateItem)
 			{
 				graphics.DrawRectangle(&borderPen, imageRect);		//윗줄 선택
 			}
-
 			imageRect.X += FIXED_WIDTH + ICON_MARGIN;
 		}
+
 
 		imageRect.X = ICON_MARGIN;							//들어가는 아랫줄 이미지
 		imageRect.Y += imageRect.Height + ICON_MARGIN;
 		imageRect.Height = halfHeight;
-		numImages = (int)mTemplateImages.size();
+		numImages = (int)mUserImages.size();
 		
 		BorderRect.X = ICON_MARGIN+FIXED_WIDTH;							//들어가는 아랫줄 선택
 		BorderRect.Y += imageRect.Height + ICON_MARGIN;
@@ -255,10 +270,10 @@ void CImageTimelineCtrl::OnPaint()
 
 		for (int i = 0; i < numImages; ++i)
 		{
-			Bitmap* bitmap = mTemplateImages[i].bitmap;
+			Bitmap* bitmap = mUserImages[i].bitmap;
 			graphics.DrawImage(bitmap, imageRect);
 
-			if (i == mHitTemplateItem)
+			if (i == mHitUserItem)
 			{
 				graphics.DrawRectangle(&borderPen, imageRect);		//아랫줄 선택
 			}
@@ -268,13 +283,99 @@ void CImageTimelineCtrl::OnPaint()
 
 		graphics.SetTransform(&mat);
 	}
-
+	 
 	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &dcMem, 0, 0, SRCCOPY);
 
 	dcMem.SelectObject(oldSurface);
 }
 
+//타임라인 더블 클릭했을때 이벤트(경로값 받아오기)
+void CImageTimelineCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	Invalidate();
+	
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();				//View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();		//View호출
 
-// CImageTimelineCtrl 메시지 처리기입니다.
+	CRect itemRect;
 
+	mHitTemplateItem = -1;
+	mHitUserItem = -1;
+	NonTitle=1;
 
+	CRect rect;
+	GetClientRect(&rect);
+
+	int availableHeight = rect.Height();
+	availableHeight -= ICON_MARGIN;
+	int halfHeight = availableHeight / 2;
+	int numImages = (int)mTemplateImages.size();
+	
+	itemRect.left = ICON_MARGIN-ScrollWidth;							//윗줄 그림
+	itemRect.top = ICON_MARGIN;
+	itemRect.right = itemRect.left + FIXED_WIDTH;
+	itemRect.bottom = itemRect.top + halfHeight;
+
+	//템플릿
+	for (int i = 0; i < numImages; ++i)
+	{
+		if (itemRect.PtInRect(point))
+		{
+			mHitTemplateItem = i;
+			TEMPmessage=mTemplateImages[i].index; //메세지에 path받아옴
+			//MessageBox(TEMPmessage);
+			if(TEMPmessage=="Cloudy Light Rays") {
+				pView->SelectTemplate=1;
+			}else if(TEMPmessage=="Dark Stormy") {
+				pView->SelectTemplate=2;
+			}else if(TEMPmessage=="Full Moon") {
+				pView->SelectTemplate=3;
+			}else if(TEMPmessage=="Mountain") {
+				pView->SelectTemplate=4;
+			}else if(TEMPmessage=="Sunset") {
+				pView->SelectTemplate=5;
+			}else if(TEMPmessage=="Thick Clouds Water") {
+				pView->SelectTemplate=6;
+			}else if(TEMPmessage=="Tropical Sunny Day") {
+				pView->SelectTemplate=7;
+			}
+			pView->Invalidate();
+			
+
+			return;
+		}
+
+		itemRect.OffsetRect(FIXED_WIDTH + ICON_MARGIN, 0);
+	}
+
+	
+	//이미지
+	itemRect.top = itemRect.bottom + ICON_MARGIN;			//아랫줄 그림
+	itemRect.left = ICON_MARGIN-ScrollWidth;					//ScrollWidth 추가하여 스크롤 후에도 제대로 선택 되게끔 함. 원래는 스크롤 이동하면 선택 사각형이 스크롤만큼 이동을 안했음
+	itemRect.right = itemRect.left + FIXED_WIDTH;
+	itemRect.bottom = itemRect.top + halfHeight;
+
+	numImages = (int)mUserImages.size();
+
+	for (int i = 0; i < numImages; ++i)
+	{
+		if (itemRect.PtInRect(point))
+		{
+			mHitUserItem = i; //주석 푸르면 사각형 표시됨
+			IMGmessage0=mUserImages[i].index; //메세지에 path받아옴
+			CString IMGmessage;
+			IMGmessage.Format("%d" , IMGmessage0);
+			//MessageBox(IMGmessage);
+
+			pView->SelectTemplate=1;
+			pView->Invalidate();
+			return;
+		}
+
+		itemRect.OffsetRect(FIXED_WIDTH + ICON_MARGIN, 0);
+	}
+
+	
+	CWnd::OnLButtonDblClk(nFlags, point);
+}

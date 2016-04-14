@@ -84,13 +84,17 @@ void CTemplateCtrl::OnDblclkTree(NMHDR *pNMHDR, LRESULT *pResult)
 	CTreeCtrl *pTreeCtrl=(CTreeCtrl *)GetDlgItem(IDC_TREE);
      NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 
-	CString m_Select;
+	std::string m_Select;
 
 	HTREEITEM hItem = pTreeCtrl->GetSelectedItem();
 	m_Select=m_ctrlTree.GetItemText(hItem);
 
-	if(hItem!=pTreeCtrl->GetRootItem()){
-			MessageBox(m_Select);
-		}
+	if(pTreeCtrl->ItemHasChildren(hItem)==0){
+		std::string path(m_ctrlImagelist.GetTemplatePathFor(m_Select));
+		theApp.GetTimelineWnd()->AddTemplate(m_ctrlTree.GetItemText(hItem), path);
+		//MessageBox(m_Select.c_str());
+	}
+	
+
 	*pResult = 0;
 }
