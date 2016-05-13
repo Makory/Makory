@@ -19,18 +19,15 @@ CTimelinePane::~CTimelinePane()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CTimelinePane, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-
-
-// CTimelinePane 메시지 처리기입니다.
-
-
-
+CImageTimelineCtrl* CTimelinePane::GetTimelineCtrl()
+{
+	return m_ctrlTimeline.GetTimelineCtrl();
+}
 
 int CTimelinePane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {

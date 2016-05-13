@@ -5,26 +5,41 @@
 #pragma once
 
 #include "HotAirBalloon.h"
+#include "Film.h"
+#include "Ocean.h"
 #include "BmpToArray.h"
 #include "ImageTimelineCtrl.h"
+
+class CMakoryDoc;
 
 class CMakoryView : public CView
 {
 protected: // serialization에서만 만들어집니다.
 	CMakoryView();
 	DECLARE_DYNCREATE(CMakoryView)
-	
 
-	//사용자 정의
 public:
 	HDC m_hDC; // GDI Device Context
 	HGLRC m_hglRC;// Rendering Context
 
 	void InitGL();
 	void ReSizeGLScene(GLsizei width, GLsizei height);
-	void CMakoryView::DrawGLTitle();
-	void CMakoryView::DrawGLScene(int SelectSky);
+	void DrawGLTitle(int SelectTemplate);
+	void DrawGLScene(int SelectSky);
+	void BalloonAnimation();
+	void ProjectorAnimation();
+	void FilmAnimation();
+	void SlateAnimation();
+	void WaveAnimation();
+	void OceanAnimation();
+	void FishingAnimation();
 	BOOL SetPixelformat(HDC hdc);
+
+	void StartAnimation();
+	void BallonStartAnimation();
+	void UpdateBalloonData();
+	void Initialization();
+	void BallonInitialization();
 
 	// 카메라 변수 설정:
 	GLfloat pos[3];
@@ -39,10 +54,19 @@ public:
 	void LeftVec();
 
 	HotAirBalloon HotAirBalloon;
+	Film Film;
+	Ocean Ocean;
 	BmpToArray BmpToArray;
 	CImageTimelineCtrl* ImageTimeline;
 	
 	int SelectTemplate;
+	CString SelectImage;
+	
+	double x;
+	double y;
+	double z;
+
+	int IsItKey;
 
 // 특성입니다.
 public:
@@ -55,6 +79,8 @@ public:
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	
+
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -82,6 +108,7 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 #ifndef _DEBUG  // MakoryView.cpp의 디버그 버전

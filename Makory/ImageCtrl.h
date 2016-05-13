@@ -21,9 +21,13 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	virtual BOOL OnInitDialog() override;
 	CButton m_ctrlLoadbutton;
 	afx_msg void OnBnClickedLoadButton();
 	afx_msg void OnLvnItemchangedImageList(NMHDR *pNMHDR, LRESULT *pResult);
 	CImagelist m_ctrlImagelist;
 	afx_msg void OnDblclkImagelist(NMHDR *pNMHDR, LRESULT *pResult);
+
+	CImageList* m_largeIcon2;
+	afx_msg void OnLvnItemchangedImagelist(NMHDR *pNMHDR, LRESULT *pResult);
 };

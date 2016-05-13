@@ -12,6 +12,8 @@ public:
 	CTimelineCtrl(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CTimelineCtrl();
 
+	CImageTimelineCtrl* GetTimelineCtrl();
+
 	void AddImage(int index, const std::string& path);
 	void AddTemplate(CString index, const std::string& path);
 

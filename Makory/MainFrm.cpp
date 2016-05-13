@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 #include "Makory.h"
-
 #include "MainFrm.h"
+#include "MakoryView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,6 +42,17 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+}
+
+CEditorCtrl* CMainFrame::GetEditorCtrl()
+{
+	return m_paneEditor.GetEditorCtrl();
+}
+
+void CMainFrame::ConnectTimelineToMainView()
+{
+	CMakoryView* pView = (CMakoryView*)GetActiveView();		//ViewÈ£Ãâ
+	pView->ImageTimeline = m_paneTimeline.GetTimelineCtrl();
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)

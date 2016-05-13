@@ -5,6 +5,8 @@
 #pragma once
 #include "editorpane.h"
 #include "timelinepane.h"
+#include "BalloonDlg.h"
+#include "HotAirBalloon.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -16,7 +18,9 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 
-// 작업입니다.
+	CEditorCtrl* GetEditorCtrl();
+	void ConnectTimelineToMainView();
+
 public:
 
 // 재정의입니다.
@@ -48,6 +52,7 @@ protected:
 public:
 	CEditorPane m_paneEditor;
 	CTimelinePane m_paneTimeline;
+	
 };
 
 

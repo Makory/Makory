@@ -20,6 +20,11 @@ CTimelineCtrl::~CTimelineCtrl()
 {
 }
 
+CImageTimelineCtrl* CTimelineCtrl::GetTimelineCtrl()
+{
+	return &m_ctrlImageTimeline;
+}
+
 void CTimelineCtrl::AddImage(int index, const std::string& path)
 {
 	m_ctrlImageTimeline.AddImgThumbnail(index, path);

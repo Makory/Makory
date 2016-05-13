@@ -12,6 +12,8 @@ public:
 	CTimelinePane();
 	virtual ~CTimelinePane();
 
+	CImageTimelineCtrl* GetTimelineCtrl();
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

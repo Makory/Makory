@@ -65,7 +65,7 @@ BOOL CTemplateCtrl::OnInitDialog()
 	for(int i=0; i<3; i++) {
 	m_ctrlTree.InsertItem(Ocean[i], 2, 2, htemplate[2], TVI_LAST);
 	}
-	CString Party[] = {"미러볼", "음파", "악보"};
+	CString Party[] = {"미러볼", "음파", "악보"}; 
 	for(int i=0; i<3; i++) {
 	m_ctrlTree.InsertItem(Party[i], 2, 2, htemplate[3], TVI_LAST);
 	}

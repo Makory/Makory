@@ -15,6 +15,8 @@ public:
 	void AddImgThumbnail(int index, const std::string& path);
 	void AddTempThumbnail(CString index, const std::string& path);
 
+	void OnAnimationFinished();
+
 protected:
 	DECLARE_MESSAGE_MAP()
 	afx_msg int OnCreate(CREATESTRUCT* createStruct);
@@ -22,13 +24,25 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnHScroll(UINT, UINT, CScrollBar*);
 	afx_msg void OnLButtonDown(UINT, CPoint point);
+	afx_msg void OnLButtonUp(UINT, CPoint point);
+	afx_msg void OnCaptureChanged(CWnd* capturingWnd);
+	afx_msg void OnMouseMove(UINT flags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* dc);
 	afx_msg void OnPaint();
 
+	bool UpdateHotItem(CPoint point);
 	void UpdateScrollParameters();
 
 	struct TemplateItem
 	{
+		TemplateItem& operator=(const TemplateItem& templateItem)
+		{
+			index = templateItem.index;
+			path = templateItem.path;
+			bitmap = templateItem.bitmap;
+			return *this;
+		}
+
 		CString index;
 		std::string path;
 		Gdiplus::Bitmap* bitmap;
@@ -37,23 +51,46 @@ protected:
 
 	struct ImageItem
 	{
+		ImageItem& operator=(const ImageItem& imageItem)
+		{
+			index = imageItem.index;
+			path = imageItem.path;
+			bitmap = imageItem.bitmap;
+			return *this;
+		}
+
 		int index;
 		std::string path;
 		Gdiplus::Bitmap* bitmap;
-
 	};
-
 
 	std::vector<TemplateItem> mTemplateImages;
 	std::vector<ImageItem> mUserImages;
-	int mHitTemplateItem;
-	int mHitUserItem;
+	int mHotTemplateItem;
+	int itemIndex;
+	int mHotUserItem;
 
 public:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	int IMGmessage0;
+	CString IMGmessage;
 	CString TEMPmessage;
 	int NonTitle;
+	int sel;
+	float CurrentImage;
+
+private:
+	void StartDragging(CPoint point);
+	void EnsureVisible(int index);
+	CString type;
+	CPoint Select;
+	int mCurrentFrame;
+	void PlayCurrentFrame();
+
+	bool mDragEntered;
+	CImageList mDragIcon;
+public:
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

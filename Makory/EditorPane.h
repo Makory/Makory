@@ -1,6 +1,6 @@
 #pragma once
 #include "editorctrl.h"
-
+#include "BalloonDlg.h"
 
 // CEditorPane
 
@@ -11,6 +11,9 @@ class CEditorPane : public CDockablePane
 public:
 	CEditorPane();
 	virtual ~CEditorPane();
+
+	CEditorCtrl* GetEditorCtrl();
+
 
 protected:
 	DECLARE_MESSAGE_MAP()

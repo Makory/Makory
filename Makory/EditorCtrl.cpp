@@ -5,8 +5,10 @@
 #include "Makory.h"
 #include "EditorCtrl.h"
 #include "afxdialogex.h"
-
-
+#include "ImageTimelineCtrl.h"
+#include "MainFrm.h"
+#include "MakoryDoc.h"
+#include "MakoryView.h"
 // CEditorCtrl 대화 상자입니다.
 
 IMPLEMENT_DYNAMIC(CEditorCtrl, CDialogEx)
@@ -21,6 +23,16 @@ CEditorCtrl::~CEditorCtrl()
 {
 }
 
+void CEditorCtrl::ChangeEditDlgTo(int templateType)
+{
+	m_ctrlEdittap.ChangeContentTo(templateType);
+}
+
+void CEditorCtrl::ChangeBalloonDlgTo(int redcolor)
+{
+	m_ctrlEdittap.ChangeRedColorTo(redcolor);
+}
+
 void CEditorCtrl::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -30,7 +42,7 @@ void CEditorCtrl::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CEditorCtrl, CDialogEx)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB, &CEditorCtrl::OnTcnSelchangeTab)
-END_MESSAGE_MAP()
+	END_MESSAGE_MAP()
 
 
 // CEditorCtrl 메시지 처리기입니다.
@@ -47,12 +59,14 @@ BOOL CEditorCtrl::OnInitDialog()
 	CString    strTwo = _T("템플릿 선택");
 	CString    strThree = _T("편집창");
 
+	
 	//에디터 텝 추가 
 	//m_ctrTab = 에디터 텝 맴버 변수
 	m_ctrTab.InsertItem(1, strOne);
 	m_ctrTab.InsertItem(2, strTwo);
 	m_ctrTab.InsertItem(3, strThree);
-		CRect Rect;
+
+	CRect Rect;
 	m_ctrTab.GetClientRect(&Rect);
 
 	m_ctrlImage.Create(IDD_IMAGE_DIALOG, &m_ctrTab);
@@ -61,15 +75,16 @@ BOOL CEditorCtrl::OnInitDialog()
 		SWP_SHOWWINDOW | SWP_NOZORDER);
 	m_pwndShow = &m_ctrlImage;
 
-	m_ctrlTemplate.Create(IDD_TEMPLATE_DIALOG, &m_ctrTab);m_ctrlTemplate.SetWindowPos(NULL, 5, 25,    Rect.Width() -12, Rect.Height() - 33,    SWP_NOZORDER); 
-	
+	m_ctrlTemplate.Create(IDD_TEMPLATE_DIALOG, &m_ctrTab);
+	m_ctrlTemplate.SetWindowPos(NULL, 5, 25,    Rect.Width() -12, Rect.Height() - 33,    SWP_NOZORDER); 
 	
 	m_ctrlEdittap.Create(IDD_EDITTAP_DIALOG, &m_ctrTab);
+	
+
 	m_ctrlEdittap.SetWindowPos(NULL, 5, 25,
 		Rect.Width() - 12, Rect.Height() - 33,
 		SWP_NOZORDER);
-
-
+	
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.

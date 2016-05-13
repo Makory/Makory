@@ -109,12 +109,20 @@
     <None Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BalloonDlg.h" />
     <ClInclude Include="BmpToArray.h" />
+    <ClInclude Include="CloudsDlg.h" />
+    <ClInclude Include="DarkStormyDlg.h" />
     <ClInclude Include="EditorCtrl.h" />
     <ClInclude Include="EditorPane.h" />
     <ClInclude Include="EdittapCtrl.h" />
+    <ClInclude Include="Film.h" />
+    <ClInclude Include="FilmDlg.h" />
+    <ClInclude Include="FishingDlg.h" />
+    <ClInclude Include="FullmoonDlg.h" />
     <ClInclude Include="HotAirBalloon.h" />
     <ClInclude Include="ImageCtrl.h" />
+    <ClInclude Include="ImageEditDlg.h" />
     <ClInclude Include="Imagelist.h" />
     <ClInclude Include="ImageTimelineCtrl.h" />
     <ClInclude Include="LoadbuttonCtrl.h" />
@@ -122,21 +130,37 @@
     <ClInclude Include="Makory.h" />
     <ClInclude Include="MakoryDoc.h" />
     <ClInclude Include="MakoryView.h" />
+    <ClInclude Include="MountainDlg.h" />
+    <ClInclude Include="Ocean.h" />
+    <ClInclude Include="OceanDlg.h" />
+    <ClInclude Include="ProjectorDlg.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SlateDlg.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SunsetDlg.h" />
     <ClInclude Include="TapCtrl.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TemplateCtrl.h" />
     <ClInclude Include="TimelineCtrl.h" />
     <ClInclude Include="TimelinePane.h" />
+    <ClInclude Include="TropicalDlg.h" />
+    <ClInclude Include="WaveDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BalloonDlg.cpp" />
     <ClCompile Include="BmpToArray.cpp" />
+    <ClCompile Include="CloudsDlg.cpp" />
+    <ClCompile Include="DarkStormyDlg.cpp" />
     <ClCompile Include="EditorCtrl.cpp" />
     <ClCompile Include="EditorPane.cpp" />
     <ClCompile Include="EdittapCtrl.cpp" />
+    <ClCompile Include="Film.cpp" />
+    <ClCompile Include="FilmDlg.cpp" />
+    <ClCompile Include="FishingDlg.cpp" />
+    <ClCompile Include="FullmoonDlg.cpp" />
     <ClCompile Include="HotAirBalloon.cpp" />
     <ClCompile Include="ImageCtrl.cpp" />
+    <ClCompile Include="ImageEditDlg.cpp" />
     <ClCompile Include="Imagelist.cpp" />
     <ClCompile Include="ImageTimelineCtrl.cpp" />
     <ClCompile Include="LoadbuttonCtrl.cpp" />
@@ -144,14 +168,22 @@
     <ClCompile Include="Makory.cpp" />
     <ClCompile Include="MakoryDoc.cpp" />
     <ClCompile Include="MakoryView.cpp" />
+    <ClCompile Include="MountainDlg.cpp" />
+    <ClCompile Include="Ocean.cpp" />
+    <ClCompile Include="OceanDlg.cpp" />
+    <ClCompile Include="ProjectorDlg.cpp" />
+    <ClCompile Include="SlateDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SunsetDlg.cpp" />
     <ClCompile Include="TapCtrl.cpp" />
     <ClCompile Include="TemplateCtrl.cpp" />
     <ClCompile Include="TimelineCtrl.cpp" />
     <ClCompile Include="TimelinePane.cpp" />
+    <ClCompile Include="TropicalDlg.cpp" />
+    <ClCompile Include="WaveDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Makory.rc" />

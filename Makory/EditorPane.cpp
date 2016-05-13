@@ -19,6 +19,12 @@ CEditorPane::~CEditorPane()
 {
 }
 
+CEditorCtrl* CEditorPane::GetEditorCtrl()
+{
+	return &m_ctrlEditor;
+}
+
+
 
 BEGIN_MESSAGE_MAP(CEditorPane, CDockablePane)
 	ON_WM_CREATE()

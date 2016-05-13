@@ -19,139 +19,141 @@ using namespace cv;
 #define new DEBUG_NEW
 #endif
 
-
-// CMakoryView
+static const UINT TIMER_ID_ANIMATION = 1000;
 
 IMPLEMENT_DYNCREATE(CMakoryView, CView)
 
-BEGIN_MESSAGE_MAP(CMakoryView, CView)
-	// Ç¥ÁØ ÀÎ¼â ¸í·ÉÀÔ´Ï´Ù.
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMakoryView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
-	ON_WM_CREATE()
-	ON_WM_DESTROY()
-	ON_WM_SIZE()
-	ON_WM_ERASEBKGND()
-	ON_WM_KEYDOWN()
-END_MESSAGE_MAP()
+	BEGIN_MESSAGE_MAP(CMakoryView, CView)
+		// Ç¥ÁØ ÀÎ¼â ¸í·ÉÀÔ´Ï´Ù.
+		ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+		ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+		ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMakoryView::OnFilePrintPreview)
+		ON_WM_CONTEXTMENU()
+		ON_WM_RBUTTONUP()
+		ON_WM_CREATE()
+		ON_WM_DESTROY()
+		ON_WM_SIZE()
+		ON_WM_ERASEBKGND()
+		//ON_WM_KEYDOWN()
+		ON_WM_TIMER()
+	END_MESSAGE_MAP()
 
-// CMakoryView »ý¼º/¼Ò¸ê
+	// CMakoryView »ý¼º/¼Ò¸ê
 
-CMakoryView::CMakoryView()
-{
-	// TODO: ¿©±â¿¡ »ý¼º ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	pos[0]=0.f;
-	pos[1]=0.f;
-	pos[2]=3.f;
+	CMakoryView::CMakoryView()
+	{
+		// TODO: ¿©±â¿¡ »ý¼º ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+		pos[0]=0.f;
+		pos[1]=0.f;
+		pos[2]=3.f;
 
-	lookAt[0]=0.f;
-	lookAt[1]=0.f;
-	lookAt[2]=0.f;
+		lookAt[0]=0.f;
+		lookAt[1]=0.f;
+		lookAt[2]=0.f;
 
-	upVec[0]=0.f;
-	upVec[1]=1.f;
-	upVec[2]=0.f;
-	
-	SelectTemplate=0;
-}
+		upVec[0]=0.f;
+		upVec[1]=1.f;
+		upVec[2]=0.f;
 
-CMakoryView::~CMakoryView()
-{
-}
-
-BOOL CMakoryView::PreCreateWindow(CREATESTRUCT& cs)
-{
-	// TODO: CREATESTRUCT cs¸¦ ¼öÁ¤ÇÏ¿© ¿©±â¿¡¼­
-	//  Window Å¬·¡½º ¶Ç´Â ½ºÅ¸ÀÏÀ» ¼öÁ¤ÇÕ´Ï´Ù.
-
-	return CView::PreCreateWindow(cs);
-}
-
-// CMakoryView ±×¸®±â
-
-void CMakoryView::OnDraw(CDC* /*pDC*/)
-{
-	//SelectTemplate=ImageTimeline->NonTitle;
-	CMakoryDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	// TODO: ¿©±â¿¡ ¿ø½Ã µ¥ÀÌÅÍ¿¡ ´ëÇÑ ±×¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	
-	if(SelectTemplate==0) {
-		DrawGLTitle();		//Ã³À½ ½ÇÇà½Ã Å¸ÀÌÆ² ÀÌ¹ÌÁö º¸¿©Áü
-	} else {
-		DrawGLScene(SelectTemplate);		//¼±ÅÃ½Ã ÅÛÇÃ¸´ º¸¿©Áü
+		SelectTemplate=0;
+		IsItKey=0;
 	}
-}
+
+	CMakoryView::~CMakoryView()
+	{
+	}
 
 
-// CMakoryView ÀÎ¼â
+	BOOL CMakoryView::PreCreateWindow(CREATESTRUCT& cs)
+	{
+		// TODO: CREATESTRUCT cs¸¦ ¼öÁ¤ÇÏ¿© ¿©±â¿¡¼­
+		//  Window Å¬·¡½º ¶Ç´Â ½ºÅ¸ÀÏÀ» ¼öÁ¤ÇÕ´Ï´Ù.
+
+		return CView::PreCreateWindow(cs);
+	}
+
+	// CMakoryView ±×¸®±â
+
+	void CMakoryView::OnDraw(CDC* /*pDC*/)
+	{
+		//SelectTemplate=ImageTimeline->NonTitle;
+		CMakoryDoc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
+
+		// TODO: ¿©±â¿¡ ¿ø½Ã µ¥ÀÌÅÍ¿¡ ´ëÇÑ ±×¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+
+		if(SelectTemplate<=0) {
+			DrawGLTitle(SelectTemplate);		//Ã³À½ ½ÇÇà½Ã Å¸ÀÌÆ² ÀÌ¹ÌÁö º¸¿©Áü
+		} else {
+			DrawGLScene(SelectTemplate);		//¼±ÅÃ½Ã ÅÛÇÃ¸´ º¸¿©Áü
+		}
+	}
 
 
-void CMakoryView::OnFilePrintPreview()
-{
+	// CMakoryView ÀÎ¼â
+
+
+	void CMakoryView::OnFilePrintPreview()
+	{
 #ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
+		AFXPrintPreview(this);
 #endif
-}
+	}
 
-BOOL CMakoryView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	// ±âº»ÀûÀÎ ÁØºñ
-	return DoPreparePrinting(pInfo);
-}
+	BOOL CMakoryView::OnPreparePrinting(CPrintInfo* pInfo)
+	{
+		// ±âº»ÀûÀÎ ÁØºñ
+		return DoPreparePrinting(pInfo);
+	}
 
-void CMakoryView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: ÀÎ¼âÇÏ±â Àü¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
-}
+	void CMakoryView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+	{
+		// TODO: ÀÎ¼âÇÏ±â Àü¿¡ Ãß°¡ ÃÊ±âÈ­ ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	}
 
-void CMakoryView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: ÀÎ¼â ÈÄ Á¤¸® ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
-}
+	void CMakoryView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+	{
+		// TODO: ÀÎ¼â ÈÄ Á¤¸® ÀÛ¾÷À» Ãß°¡ÇÕ´Ï´Ù.
+	}
 
-void CMakoryView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
+	void CMakoryView::OnRButtonUp(UINT /* nFlags */, CPoint point)
+	{
+		ClientToScreen(&point);
+		OnContextMenu(this, point);
+	}
 
-void CMakoryView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
-{
+	void CMakoryView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
+	{
 #ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+		theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
-}
+	}
 
 
-// CMakoryView Áø´Ü
+	// CMakoryView Áø´Ü
 
 #ifdef _DEBUG
-void CMakoryView::AssertValid() const
-{
-	CView::AssertValid();
-}
+	void CMakoryView::AssertValid() const
+	{
+		CView::AssertValid();
+	}
 
-void CMakoryView::Dump(CDumpContext& dc) const
-{
-	CView::Dump(dc);
-}
+	void CMakoryView::Dump(CDumpContext& dc) const
+	{
+		CView::Dump(dc);
+	}
 
-CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·Î ÁöÁ¤µË´Ï´Ù.
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMakoryDoc)));
-	return (CMakoryDoc*)m_pDocument;
-}
+	CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·Î ÁöÁ¤µË´Ï´Ù.
+	{
+		ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMakoryDoc)));
+		return (CMakoryDoc*)m_pDocument;
+	}
 #endif //_DEBUG
 
 
-// CMakoryView ¸Þ½ÃÁö Ã³¸®±â
+	// CMakoryView ¸Þ½ÃÁö Ã³¸®±â
 
 	BOOL CMakoryView::SetPixelformat(HDC hdc) 
 	{
@@ -196,7 +198,7 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		} 
 		return TRUE; 
 	}
-	
+
 	void CMakoryView::InitGL() 
 	{
 
@@ -205,6 +207,8 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // ´õºí ¹öÆÛ¸µ
 	}
 
 	void CMakoryView::ReSizeGLScene(GLsizei width, GLsizei height) 
@@ -226,8 +230,8 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		glLoadIdentity();
 	}
 
-	
-	void CMakoryView::DrawGLTitle() 
+
+	void CMakoryView::DrawGLTitle(int SelectTemplate) 
 	{
 		//--------------------OpenCV---------------------
 		int _width = 400;
@@ -253,48 +257,329 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		//gluLookAt(pos[0],pos[1],pos[2],lookAt[0],lookAt[1],lookAt[2],upVec[0],upVec[1],upVec[2]);
 
 		// draw 
-
+		if(SelectTemplate==0){
 			BmpToArray.LoadBmp("space/Title_Image.bmp");
+		} else if(SelectTemplate==-1){
+			BmpToArray.LoadBmp("space/NoTemplete.bmp");
+		}
 
-	glEnable(GL_TEXTURE_2D);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glDisable(GL_DEPTH_TEST);
-	// Skybox´Â ´Ù¸¥ »ö»óÀÇ ¿µÇâÀ» ¹ÞÀ¸¸é ¾ÈµÇ¹Ç·Î DECAL
-	glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_DECAL);
-	glColor3f(0,0,0);
-	
+		glEnable(GL_TEXTURE_2D);
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glDisable(GL_DEPTH_TEST);
+		// Skybox´Â ´Ù¸¥ »ö»óÀÇ ¿µÇâÀ» ¹ÞÀ¸¸é ¾ÈµÇ¹Ç·Î DECAL
+		glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_DECAL);
+		glColor3f(0,0,0);
 
-	//front
-	glBegin(GL_QUADS);
+
+		//front
+		glBegin(GL_QUADS);
 		glTexCoord2f(1.0, 1.0); glVertex3f(-0.3,-0.2,-0.48);
 		glTexCoord2f(0.0, 1.0); glVertex3f(0.3,-0.2,-0.48);
 		glTexCoord2f(0.0, 0.0); glVertex3f(0.3,0.2,-0.48);
 		glTexCoord2f(1.0, 0.0); glVertex3f(-0.3,0.2,-0.48);
-	glEnd();
-	
-	glEnable(GL_DEPTH_TEST);
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
-			//HotAirBalloon->drawSkyboxfront();
+		glEnd();
+
+		glEnable(GL_DEPTH_TEST);
+		glPopMatrix();
+
+		glDisable(GL_TEXTURE_2D);
+		//HotAirBalloon->drawSkyboxfront();
 
 		//glFinish(); // ½Ì±Û ¹öÆÛ or ´õºí ¹öÆÛ¸¦ »ç¿ëÇÏ´Â °æ¿ì ¸ðµÎ glReadPixels() ÇÔ¼ö Àü¿¡ »ç¿ë
 		SwapBuffers(m_hDC);   
-		
-		glReadPixels (0, 0, _width, _height, GL_BGR_EXT, GL_UNSIGNED_BYTE, img->imageData);
+
+		//glReadPixels (0, 0, _width, _height, GL_BGR_EXT, GL_UNSIGNED_BYTE, img->imageData);
 		//cvShowImage (window_name, img);
 
-		waitKey(0);
+		//waitKey(0);
 
 
 		//cvReleaseImage (&img);
 		//cvDestroyWindow(window_name);
-	
-	
+
+
+	}
+
+	void CMakoryView::StartAnimation()
+	{
+		Initialization();
+		SetTimer(TIMER_ID_ANIMATION, 100/*in milisecond*/, nullptr);
+
+		Invalidate(FALSE);
+	}
+	void CMakoryView::BallonStartAnimation()
+	{
+		BallonInitialization();
+		SetTimer(TIMER_ID_ANIMATION, 100/*in milisecond*/, nullptr);
+
+		Invalidate(FALSE);
+	}
+
+	void CMakoryView::OnTimer(UINT_PTR nIDEvent)
+	{
+		if (TIMER_ID_ANIMATION == nIDEvent)
+		{
+			if (0 == SelectTemplate)
+			{
+				KillTimer(TIMER_ID_ANIMATION);
+			}
+			else
+			{
+				DrawGLScene(SelectTemplate) ;
+			}
+		}
+		else
+		{
+			CView::OnTimer(nIDEvent);
+		}
+	}
+
+	void CMakoryView::BalloonAnimation()
+	{
+			if(lookAt[1]<-30 && pos[1]<-30) {
+				KillTimer(TIMER_ID_ANIMATION);
+				if(IsItKey==1) {
+				BallonInitialization();
+					ImageTimeline->OnAnimationFinished();
+				}
+			}
+		else if (y>=45) {
+			y+=0.2;	
+			if(pos[1] > lookAt[1]) {
+				pos[1]-=1.0;
+				lookAt[1]-=1.01;
+			}else {
+				pos[1]-=1.0;
+				lookAt[1]=pos[1];
+
+			}
+
+		}else if(y>=40){
+			y+=0.2;	
+			pos[1]-=0.5;
+			lookAt[1]-=0.49;	
+		}else if (y>=37){
+			y+=0.25;	
+			pos[1]+=0.2;
+			lookAt[1]+=0.21;	
+		} else if (y>=-12){
+			y+=0.2;	
+			if(pos[1]<=lookAt[1])
+			{
+				pos[1]+=0.2;
+				lookAt[1]+=0.20;
+			} else {
+				pos[1]+=0.2;
+				lookAt[1]+=0.21;	
+			}
+		}else {
+			y+=0.25;	 
+			pos[1]+=0.2;
+			lookAt[1]+=0.19;	
+		}
+
+		Invalidate(FALSE);
+
+			if(SelectTemplate == 1){
+			HotAirBalloon.HotBalloonLine(0,y,0);
+			HotAirBalloon.HotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.HotBalloonTexture(0,y,0);
+		}
+		if(SelectTemplate == 2){
+			HotAirBalloon.DarkHotBalloonLine(0,y,0);
+			HotAirBalloon.DarkHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.DarkHotBalloonTexture(0,y,0);
+		}
+
+		if(SelectTemplate == 3){
+			HotAirBalloon.FullHotBalloonLine(0,y,0);
+			HotAirBalloon.FullHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.FullHotBalloonTexture(0,y,0);
+		}
+
+		if(SelectTemplate == 4){
+			HotAirBalloon.MountHotBalloonLine(0,y,0);
+			HotAirBalloon.MountHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.MountHotBalloonTexture(0,y,0);
+		}
+
+		if(SelectTemplate == 5){
+			HotAirBalloon.SunsetHotBalloonLine(0,y,0);
+			HotAirBalloon.SunsetHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.SunsetHotBalloonTexture(0,y,0);
+		}
+
+		if(SelectTemplate == 6){
+			HotAirBalloon.CloudsHotBalloonLine(0,y,0);
+			HotAirBalloon.CloudsHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.CloudsHotBalloonTexture(0,y,0);
+		}
+		if(SelectTemplate == 7){
+			HotAirBalloon.TropicalHotBalloonLine(0,y,0);
+			HotAirBalloon.TropicalHotBalloonSphere(0,y,0);
+			BmpToArray.LoadBmp(SelectImage);
+			HotAirBalloon.TropicalHotBalloonTexture(0,y,0);
+		}
+
+
 	}
 
 
-	void CMakoryView::DrawGLScene(int SelectSky) 
+
+
+	void CMakoryView::ProjectorAnimation()
+	{ 
+		//¿µ»ç±â ¾Ö´Ï
+		if(x>=10) {
+			KillTimer(TIMER_ID_ANIMATION);
+			if(IsItKey==1) {
+				ImageTimeline->OnAnimationFinished();
+			}
+			} else if (x>=7){
+				x=-0.4;
+				y=-0.5;
+			} else if (x>=3){
+				x=-0.4;
+				y=-0.5;
+			}
+			  else {
+				x=-0.4;
+				y=-0.5;
+			}
+			  
+		Invalidate(FALSE);
+
+			Film.ProjectorBody(x,y,1,1,1);
+			Film.ProjectorCircle1(x,y);
+			Film.ProjectorCircle2(x,y);
+	}
+
+	void CMakoryView::FilmAnimation()
+	{
+		//ÇÊ¸§ ¾Ö´Ï
+		if(x<=-1) {
+			KillTimer(TIMER_ID_ANIMATION);
+			if(IsItKey==1) {
+				ImageTimeline->OnAnimationFinished();
+			}
+		}else {
+			x-=0.006;
+			y=-0.5;
+		}
+
+
+		Invalidate(FALSE);
+
+		Film.FilmBody(x,y);
+		BmpToArray.LoadBmp(SelectImage);
+		Film.FilmCenter2(x,y,0,0,0);//»ç¿ëÀÚ°¡ ³ÖÀ»»çÁø
+	}
+
+	void CMakoryView::SlateAnimation()
+	{
+		//½½·¹ÀÌÆ® ¾Ö´Ï
+		if(x>=10) {
+			KillTimer(TIMER_ID_ANIMATION);
+			if(IsItKey==1) {
+				ImageTimeline->OnAnimationFinished();
+			}
+		} else if (x>=7){
+			x=-0.4;
+			y=-0.5;
+		} else if (x>=3){
+			x=-0.4;
+			y=-0.5;
+		}
+		else {
+			x=-0.4;
+			y=-0.5;
+		}
+
+		Invalidate(FALSE);
+
+		Film.SlateHead(x,y);
+		Film.SlateBody(x,y);
+
+	}
+
+	void CMakoryView::WaveAnimation()
+	{
+		//ÆÄµµ ¾Ö´Ï
+	}
+
+	void CMakoryView::OceanAnimation()
+	{			
+			if(x>=10) {
+			KillTimer(TIMER_ID_ANIMATION);
+			if(IsItKey==1) {
+				ImageTimeline->OnAnimationFinished();
+			}
+			} else if (x>=7){
+				x+=0.005;	
+			} else if (x>=3){
+				x+=0.005;	
+			}else {
+				x+=0.005;	 
+			}
+			
+		Invalidate(FALSE);
+
+			Ocean.wave1(0,1.5,0,1,0,1);//ÇØÃÊ
+			Ocean.wave2(0,1.5,0,1,0,1);//ÇØÃÊ
+
+			Ocean.wave3(0,1.5,0,0,0,1);//ÇØÃÊ
+			Ocean.wave4(0,1.5,0,0,0,1);//ÇØÃÊ
+
+			Ocean.wave5(0,1.5,0,0,1,0);//ÇØÃÊ
+			Ocean.wave6(0,1.5,0,0,1,0);//ÇØÃÊ
+
+			
+			
+			Ocean.Fish3(-2,-1,0,0,0,0);//¹°°í±â 2
+			Ocean.Fish2(-2,-1,0,0,0,0);//¹°°í±â 1
+			Ocean.Fish1(0,-1,0,0,0);//º°°¡
+			Ocean.eyesR(0,-1);//º°°¡ ´«
+			Ocean.eyesL(0,-1);//º°°¡ ´«
+			Ocean.eyes(-2,-1);//¹°°í±â 1 ´«
+			Ocean.eyes2(-2,-1);//¹°°í±â 2 ´«
+			Ocean.OceanTexture(1.5,-1);//ÅØ½ºÃÄ
+
+
+	}
+
+	void CMakoryView::FishingAnimation()
+	{
+		//³¬½Ã ¾Ö´Ï
+		if(x>=10) {
+			KillTimer(TIMER_ID_ANIMATION);
+			if(IsItKey==1) {
+				ImageTimeline->OnAnimationFinished();
+			}
+		} else if (x>=5){
+			x+=0;	
+			pos[0]+=0;
+			lookAt[0]+=0;
+		} 
+		else {
+			x+=0.005;	 
+			pos[0]-=0.005;
+			lookAt[0]-=0.005;
+		}
+
+		Invalidate(FALSE);
+
+		Ocean.Ship(0,0,1,1,0);//¹è
+		Ocean.FishingTexture(0,0);
+	}
+
+	void CMakoryView::DrawGLScene(int SelectTemplete) 
 	{
 		//--------------------OpenCV---------------------
 		int _width = 400;
@@ -303,11 +588,13 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		unsigned long lImageSize = _width*3*_height; // RGB µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ¸Þ¸ð¸® Å©±â
 
 		char* window_name = "OpenGL to OpenCV";
-		glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // ½Ì±Û ¹öÆÛ¸µ
+		//glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // ½Ì±Û ¹öÆÛ¸µ
+
 		//glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // ´õºí ¹öÆÛ¸µ
-		glutInitWindowSize(400, 400);  // Ã¢ Å©±â ¼³Á¤
-		glutInitWindowPosition(0, 0);
-		IplImage *img = cvCreateImage (cvSize(_width, _height), IPL_DEPTH_8U, 3); // RGB µ¥ÀÌÅÍÇü
+		//glutInitWindowSize(400, 400);  // Ã¢ Å©±â ¼³Á¤
+		//glutInitWindowPosition(0, 0);
+
+		//IplImage *img = cvCreateImage (cvSize(_width, _height), IPL_DEPTH_8U, 3); // RGB µ¥ÀÌÅÍÇü
 		//glutCreateWindow("OpenGL");
 		// clear screen and depth buffer
 		//--------------------------------------------------
@@ -321,18 +608,19 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 
 		// draw 
 
-		/*--------ÇÏ´Ã Á¾·ù ¹øÈ£------------
-			CloudyLightRays : 1
-			DarkStormy : 2
-			FullMoon : 3
-			Mountain : 4
-			CloudyLightRays : 5
-			ThickCloudsWater : 6
-			TropicalSunnyDay : 7
-		------------------------------------*/
-				//ÇÏ´Ã ¼±ÅÃ
 
-		if(SelectSky==1) {
+		//¿­±â±¸
+
+		/*--------ÇÏ´Ã Á¾·ù ¹øÈ£------------
+		CloudyLightRays : 1
+		DarkStormy : 2
+		FullMoon : 3
+		Mountain : 4
+		CloudyLightRays : 5
+		ThickCloudsWater : 6
+		TropicalSunnyDay : 7
+		------------------------------------*/
+		if(SelectTemplete==1) {
 			BmpToArray.LoadBmp("space/CloudyLightRays/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/CloudyLightRays/back.bmp");
@@ -345,7 +633,10 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/CloudyLightRays/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==2) {
+			BalloonAnimation();
+
+
+		} else if(SelectTemplete==2) {
 			BmpToArray.LoadBmp("space/DarkStormy/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/DarkStormy/back.bmp");
@@ -358,7 +649,10 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/DarkStormy/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==3) {
+			BalloonAnimation();
+
+
+		} else if(SelectTemplete==3) {
 			BmpToArray.LoadBmp("space/FullMoon/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/FullMoon/back.bmp");
@@ -371,7 +665,10 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/FullMoon/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==4) {
+			BalloonAnimation();
+
+
+		} else if(SelectTemplete==4) {
 			BmpToArray.LoadBmp("space/Mountain/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/Mountain/back.bmp");
@@ -384,7 +681,9 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/Mountain/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==5) {
+			BalloonAnimation();
+
+		} else if(SelectTemplete==5) {
 			BmpToArray.LoadBmp("space/SunSet/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/SunSet/back.bmp");
@@ -397,7 +696,9 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/SunSet/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==6) {
+			BalloonAnimation();
+
+		} else if(SelectTemplete==6) {
 			BmpToArray.LoadBmp("space/ThickCloudsWater/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/ThickCloudsWater/back.bmp");
@@ -410,7 +711,9 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/ThickCloudsWater/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
-		} else if(SelectSky==7) {
+			BalloonAnimation();
+
+		} else if(SelectTemplete==7) {
 			BmpToArray.LoadBmp("space/TropicalSunnyDay/front.bmp");
 			HotAirBalloon.drawSkyboxfront();
 			BmpToArray.LoadBmp("space/TropicalSunnyDay/back.bmp");
@@ -423,23 +726,47 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 			HotAirBalloon.drawSkyboxup();
 			BmpToArray.LoadBmp("space/TropicalSunnyDay/down.bmp");
 			HotAirBalloon.drawSkyboxdown();
+			BalloonAnimation();
+
+			//ÇÊ¸§
+
+		} else if(SelectTemplete==8) {
+			ProjectorAnimation();
+
+		} else if(SelectTemplete==9) {
+			FilmAnimation();
+
+		} else if(SelectTemplete==10) {
+			SlateAnimation();
+
+			//¹Ù´Ù
+
+		} else if(SelectTemplete==11) {
+			WaveAnimation();
+
+		} else if(SelectTemplete==12) {
+			OceanAnimation();
+
+		} else if(SelectTemplete==13) {
+			FishingAnimation();
+
 		} else {
 			AfxMessageBox("Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
 		}
 
+		//	Invalidate(); // initialize the screen
 		//glFinish(); // ½Ì±Û ¹öÆÛ or ´õºí ¹öÆÛ¸¦ »ç¿ëÇÏ´Â °æ¿ì ¸ðµÎ glReadPixels() ÇÔ¼ö Àü¿¡ »ç¿ë
 		SwapBuffers(m_hDC);   
-		
-		glReadPixels (0, 0, _width, _height, GL_BGR_EXT, GL_UNSIGNED_BYTE, img->imageData);
+
+		//glReadPixels (0, 0, _width, _height, GL_BGR_EXT, GL_UNSIGNED_BYTE, img->imageData);
 		//cvShowImage (window_name, img);
 
-		waitKey(0);
-
+		//waitKey(0);
 
 		//cvReleaseImage (&img);
 		//cvDestroyWindow(window_name);
-	
-	
+
+
 	}
 
 
@@ -490,7 +817,7 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 	BOOL CMakoryView::OnEraseBkgnd(CDC* pDC)
 	{
 		// TODO: ¿©±â¿¡ ¸Þ½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
-		
+
 		return TRUE;		//È­¸é ±ô¹ÚÀÓ Á¦°Å
 		return CView::OnEraseBkgnd(pDC);
 	}
@@ -500,59 +827,59 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 	{
 		// TODO: ¿©±â¿¡ ¸Þ½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
 		switch(nChar){
-			case 'W':
-				LookVec();
-				pos[1]+=0.5;
-				lookAt[1]+=0.5;
-				break;
-			case 'S':
-				LookVec();
-				pos[1]-=0.5;
-				lookAt[1]-=0.5;
-				break;
-			case 'A':
-				LeftVec();
-				pos[0]-=0.5;
-				lookAt[0]-=0.5;
-				break;
-			case 'D':
-				LeftVec();
-				pos[0]+=0.5;
-				lookAt[0]+=0.5;
-				break;
-			case 'Z':
-				LeftVec();
-				pos[2]+=0.5;
-				lookAt[2]+=0.5;
-				break;
-			case 'X':
-				LeftVec();
-				pos[2]-=0.5;
-				lookAt[2]-=0.5;
-				break;
-			case VK_UP:
-				LookVec();
-				lookAt[1]+=0.1;
-				break;
-			case VK_DOWN:
-				LookVec();
-				lookAt[1]-=0.1;
-				break;
-			case VK_LEFT:
-				LeftVec();
-				lookAt[0]-=0.1;
-				break;
-			case VK_RIGHT:
-				LeftVec();
-				lookAt[0]+=0.1;
-				break;
+		case 'W':
+			LookVec();
+			pos[1]+=0.5;
+			lookAt[1]+=0.5;
+			break;
+		case 'S':
+			LookVec();
+			pos[1]-=0.5;
+			lookAt[1]-=0.5;
+			break;
+		case 'A':
+			LeftVec();
+			pos[0]-=0.5;
+			lookAt[0]-=0.5;
+			break;
+		case 'D':
+			LeftVec();
+			pos[0]+=0.5;
+			lookAt[0]+=0.5;
+			break;
+		case 'Z':
+			LeftVec();
+			pos[2]+=0.5;
+			lookAt[2]+=0.5;
+			break;
+		case 'X':
+			LeftVec();
+			pos[2]-=0.5;
+			lookAt[2]-=0.5;
+			break;
+		case VK_UP:
+			LookVec();
+			lookAt[1]+=0.1;
+			break;
+		case VK_DOWN:
+			LookVec();
+			lookAt[1]-=0.1;
+			break;
+		case VK_LEFT:
+			LeftVec();
+			lookAt[0]-=0.1;
+			break;
+		case VK_RIGHT:
+			LeftVec();
+			lookAt[0]+=0.1;
+			break;
 		}
-	
+
 		InvalidateRect(NULL, FALSE); // initialize the screen
 
 		CView::OnKeyDown(nChar, nRepCnt, nFlags);
 	}
-	
+
 	void CMakoryView::LookVec() 
 	{
 		//º¤ÅÍÈ­ÇÏ±â
@@ -566,7 +893,7 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		lookVec[1]=lookVec[1]/root;
 		lookVec[2]=lookVec[2]/root;
 	}
-	
+
 	void CMakoryView::LeftVec() 
 	{
 		LookVec();		//lookVec¼³Á¤
@@ -579,4 +906,35 @@ CMakoryDoc* CMakoryView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·
 		leftVec[0]=leftVec[0]/root;
 		leftVec[1]=leftVec[1]/root;
 		leftVec[2]=leftVec[2]/root;
+	}
+
+
+	void CMakoryView::Initialization(){
+		x=0;
+		y=0;
+		z=0;
+		pos[0]=0.f;
+		pos[1]=0.f;
+		pos[2]=3.f;
+		lookAt[0]=0.f;
+		lookAt[1]=0.f;
+		lookAt[2]=0.f;
+		upVec[0]=0.f;
+		upVec[1]=1.f;
+		upVec[2]=0.f;
+	}
+
+	void CMakoryView::BallonInitialization(){
+		x=0;
+		y=-33;
+		z=0;
+		pos[0]=0.f;
+		pos[1]=-30.f;
+		pos[2]=3.f;
+		lookAt[0]=0.f;
+		lookAt[1]=-30.f;
+		lookAt[2]=0.f;
+		upVec[0]=0.f;
+		upVec[1]=1.f;
+		upVec[2]=0.f;
 	}
