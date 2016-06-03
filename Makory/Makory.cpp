@@ -82,7 +82,7 @@ BOOL CMakoryApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
-
+	afxAmbientActCtx = FALSE;
 
 	// OLE 라이브러리를 초기화합니다.
 	if (!AfxOleInit())

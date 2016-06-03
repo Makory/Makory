@@ -23,14 +23,12 @@ protected:
 
 public:
 	virtual BOOL OnInitDialog();
-	void ChangeColorTo(int balloonredcolor);
+	void ChangeScaleTo(int balloonscale);
 	
-
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	
 	double fpos;
-	double fgpos;
-	afx_msg void OnEnChangeBalloonRedValue();
+
 	CSliderCtrl mBalloonRedS;
 	CEdit mBalloonRedValue;
 
@@ -46,4 +44,11 @@ public:
 
 	CEdit mBalloonVEdit;
 	CEdit mBalloonHEdit;
+	
+	afx_msg void OnEnUpdateBalloonRedValue();
+	afx_msg void OnEnUpdateBalloonGreenValue();
+	afx_msg void OnEnUpdateBalloonBlueValue();
+	afx_msg void OnEnUpdateBalloonVEdit();
+	afx_msg void OnEnUpdateBalloonHEdit();
+
 };

@@ -41,8 +41,12 @@ void CDarkStormyDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDarkStormyDlg, CDialogEx)
-	ON_EN_CHANGE(IDC_EDIT1, &CDarkStormyDlg::OnEnChangeEdit1)
 	ON_WM_HSCROLL()
+	ON_EN_UPDATE(IDC_DARKSTORMY_RED_VALUE, &CDarkStormyDlg::OnEnUpdateDarkStormyRedValue)
+	ON_EN_UPDATE(IDC_DARKSTORMY_GREEN_VALUE, &CDarkStormyDlg::OnEnUpdateDarkStormyGreenValue)
+	ON_EN_UPDATE(IDC_DARKSTORMY_BLUE_VALUE, &CDarkStormyDlg::OnEnUpdateDarkStormyBlueValue)
+	ON_EN_UPDATE(IDC_DARKSTORMY_V_VALUE, &CDarkStormyDlg::OnEnUpdateDarkStormyVEdit)
+	ON_EN_UPDATE(IDC_DARKSTORMY_H_VALUE, &CDarkStormyDlg::OnEnUpdateDarkStormyHEdit)
 END_MESSAGE_MAP()
 
 
@@ -87,16 +91,6 @@ BOOL CDarkStormyDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-void CDarkStormyDlg::OnEnChangeEdit1()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
 
 void CDarkStormyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
@@ -169,10 +163,10 @@ void CDarkStormyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //왼쪽으로 이동 
+				dpos = 2*(-0.5+((double)npos * 0.01)); //왼쪽으로 이동 
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //오른쪽으로 이동
+				dpos = 2*(((double)npos * 0.01)-0.5); //오른쪽으로 이동
 			}
 
 			pView->HotAirBalloon.darkstormyy=dpos; //balloony값을 바꿔줌
@@ -190,11 +184,11 @@ void CDarkStormyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			mDarkStormyHEdit.SetWindowTextA(str); //edit 박스에 슬라이더 값 들어감
 
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //위으로 이동 
+				dpos = 5*(-0.5+((double)npos * 0.01)); //위으로 이동 
 				
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //아래쪽으로 이동
+				dpos = 5*(((double)npos * 0.01)-0.5); //아래쪽으로 이동
 			}
 
 			pView->HotAirBalloon.darkstormyx=dpos; //balloonx값을 바꿔줌
@@ -203,4 +197,165 @@ void CDarkStormyDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 	}
+}
+
+//RED edit
+void CDarkStormyDlg::OnEnUpdateDarkStormyRedValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mDarkStormyRedValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mDarkStormyRedS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+
+		pView->HotAirBalloon.darkstormyred=dpos;//풍선 빨간색값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+}
+
+//green edit
+void CDarkStormyDlg::OnEnUpdateDarkStormyGreenValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mDarkStormyGreenValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mDarkStormyGreenS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.darkstormygreen=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//blue edit
+void CDarkStormyDlg::OnEnUpdateDarkStormyBlueValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mDarkStormyBlueValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mDarkStormyBlueS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.darkstormyblue=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//수평 edit
+void CDarkStormyDlg::OnEnUpdateDarkStormyHEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mDarkStormyHEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+		mDarkStormyHSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 5*( -0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 5*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.darkstormyx=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+
+
+}
+//수직 Edit
+void CDarkStormyDlg::OnEnUpdateDarkStormyVEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+	
+	if(UpdateData(TRUE)){
+		int ipos;
+		double dpos;
+		CString String;
+		ipos = 0;
+
+		mDarkStormyVEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+
+		mDarkStormyVSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 2*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 2*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.darkstormyy=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+	
 }

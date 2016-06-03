@@ -17,7 +17,7 @@ IMPLEMENT_DYNAMIC(CBalloonDlg, CDialogEx)
 CBalloonDlg::CBalloonDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CBalloonDlg::IDD, pParent)
 {
-
+			
 }
 
 CBalloonDlg::~CBalloonDlg()
@@ -41,9 +41,12 @@ void CBalloonDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CBalloonDlg, CDialogEx)
-
 	ON_WM_HSCROLL()
-	ON_EN_CHANGE(IDC_BALLOON_RED_VALUE, &CBalloonDlg::OnEnChangeBalloonRedValue)
+	ON_EN_UPDATE(IDC_BALLOON_RED_VALUE, &CBalloonDlg::OnEnUpdateBalloonRedValue)
+	ON_EN_UPDATE(IDC_BALLOON_GREEN_VALUE, &CBalloonDlg::OnEnUpdateBalloonGreenValue)
+	ON_EN_UPDATE(IDC_BALLOON_BLUE_VALUE, &CBalloonDlg::OnEnUpdateBalloonBlueValue)
+	ON_EN_UPDATE(IDC_BALLOON_V_VALUE, &CBalloonDlg::OnEnUpdateBalloonVEdit)
+	ON_EN_UPDATE(IDC_BALLOON_H_VALUE, &CBalloonDlg::OnEnUpdateBalloonHEdit)
 END_MESSAGE_MAP()
 
 
@@ -90,7 +93,7 @@ BOOL CBalloonDlg::OnInitDialog()
 }
 
 //얘는 필요없을듯...일단 살려놓고 나중에 없애는걸로..
-void CBalloonDlg::ChangeColorTo(int balloonredcolor)
+void CBalloonDlg::ChangeScaleTo(int balloonscale)
 {	/*
 	//int balloonredsliderpos;
 	//mBalloonRedS.SetPos(balloonredcolor); //계속 미친듯이 호출됨
@@ -173,10 +176,10 @@ void CBalloonDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			
 			if(npos <= 50){ //슬라이더가 50이하일때
-				fpos = -0.5+((double)npos * 0.01); //왼쪽으로 이동 
+				fpos = 2*(-0.5+((double)npos * 0.01)); //왼쪽으로 이동 
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				fpos = ((double)npos * 0.01)-0.5; //오른쪽으로 이동
+				fpos = 2*(((double)npos * 0.01)-0.5); //오른쪽으로 이동
 			}
 
 			pView->HotAirBalloon.balloony=fpos; //balloony값을 바꿔줌
@@ -194,42 +197,183 @@ void CBalloonDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			mBalloonHEdit.SetWindowTextA(str); //edit 박스에 슬라이더 값 들어감
 
 			if(npos <= 50){ //슬라이더가 50이하일때
-				fpos = -0.5+((double)npos * 0.01); //위으로 이동 
+				fpos = 5*(-0.5+((double)npos * 0.01)); //위으로 이동 
 				
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				fpos = ((double)npos * 0.01)-0.5; //아래쪽으로 이동
+				fpos = 5*(((double)npos * 0.01)-0.5); //아래쪽으로 이동
 			}
 
 			pView->HotAirBalloon.balloonx=fpos; //balloonx값을 바꿔줌
 			pView->Invalidate(FALSE);
 		}
-
-		
 	}
-	
 
 	else
-
 	{
-		// CScrollView를 상속받은 뷰의 경우 프래임의 스크롤롤 동작시 pScrollBar이 NULL된다.
+	// CScrollView를 상속받은 뷰의 경우 프래임의 스크롤롤 동작시 pScrollBar이 NULL된다.
 	}
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-
-
-//에디터 박스가 바꼈을 경우
-void CBalloonDlg::OnEnChangeBalloonRedValue()
+//RED edit
+void CBalloonDlg::OnEnUpdateBalloonRedValue()
 {
 	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
 	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	 if(UpdateData(TRUE)){
-		 
-         //mBalloonRedS.SetPos(mBalloonRedValue); //형변환 필요...나중에..
-	 }
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mBalloonRedValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mBalloonRedS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+
+		pView->HotAirBalloon.balloonred=dpos;//풍선 빨간색값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+}
+
+//green edit
+void CBalloonDlg::OnEnUpdateBalloonGreenValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mBalloonGreenValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mBalloonGreenS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.balloongreen=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//blue edit
+void CBalloonDlg::OnEnUpdateBalloonBlueValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mBalloonBlueValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mBalloonBlueS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.balloonblue=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//수평 edit
+void CBalloonDlg::OnEnUpdateBalloonHEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mBalloonHEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+		mBalloonHSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 5*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 5*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.balloonx=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+}
+//수직 Edit
+void CBalloonDlg::OnEnUpdateBalloonVEdit()
+{
+
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mBalloonVEdit.GetWindowTextA(String);
+
+		ipos =_ttoi(String)+50;
+
+		mBalloonVSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 2*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 2*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.balloony=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+	
+
+	
 }

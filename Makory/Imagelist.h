@@ -1,5 +1,8 @@
 #pragma once
-
+#ifdef max
+#undef max
+#undef min
+#endif   //max
 // CImagelist
 
 class CImagelist : public CListCtrl

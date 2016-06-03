@@ -1,4 +1,6 @@
 #pragma once
+#include "afxcmn.h"
+#include "afxwin.h"
 
 
 // CWaveDlg 대화 상자입니다.
@@ -18,4 +20,16 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CSliderCtrl mWaveS;
+	CEdit mWaveEdit;
+public:
+	
+
+	virtual BOOL OnInitDialog();
+	
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	
+	double fpos;
+	afx_msg void OnEnUpdateWaveValue();
 };

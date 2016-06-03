@@ -13,19 +13,19 @@ IMPLEMENT_DYNAMIC(CImagelist, CListCtrl)
 
 	CImagelist::CImagelist()
 {
-	mTempToPath["Cloudy Light Rays"]="space/CloudyLightRays/left.bmp";
+	mTempToPath["Cloudy Light Rays"]="space/CloudyLightRays/front.bmp";
 	mTempToPath["Dark Stormy"]="space/DarkStormy/front.bmp";
-	mTempToPath["Full Moon"]="space/FullMoon/left.bmp";
+	mTempToPath["Full Moon"]="space/FullMoon/front.bmp";
 	mTempToPath["Mountain"]="space/Mountain/front.bmp";
-	mTempToPath["Sunset"]="space/SunSet/left.bmp";
-	mTempToPath["Thick Clouds Water"]="space/ThickCloudsWater/right.bmp";
+	mTempToPath["Sunset"]="space/SunSet/front.bmp";
+	mTempToPath["Thick Clouds Water"]="space/ThickCloudsWater/front.bmp";
 	mTempToPath["Tropical Sunny Day"]="space/TropicalSunnyDay/front.bmp";
-	mTempToPath["영사기"]="space/NoThumbnail.bmp";
-	mTempToPath["필름"]="space/NoThumbnail.bmp";
-	mTempToPath["슬레이트"]="space/NoThumbnail.bmp";
-	mTempToPath["파도"]="space/NoThumbnail.bmp";
-	mTempToPath["바다속"]="space/NoThumbnail.bmp";
-	mTempToPath["낚시"]="space/NoThumbnail.bmp";
+	mTempToPath["영사기"]="space/projector.bmp";
+	mTempToPath["필름"]="space/film.bmp";
+	mTempToPath["슬레이트"]="space/slate.bmp";
+	mTempToPath["파도"]="space/wave.bmp";
+	mTempToPath["바다속"]="space/Ocean.bmp";
+	mTempToPath["낚시"]="space/fishing.bmp";
 
 	//이미지 아이콘 생성 
 	m_largeIcon = new CImageList;

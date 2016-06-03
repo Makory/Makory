@@ -14,6 +14,9 @@
 #include "SunsetDlg.h"
 #include "CloudsDlg.h"
 #include "TropicalDlg.h"
+#include "FilmDlg.h"
+#include "SlateDlg.h"
+#include "ProjectorDlg.h"
 
 class CEdittapCtrl : public CDialogEx
 {
@@ -27,7 +30,7 @@ public:
 	enum { IDD = IDD_EDITTAP_DIALOG };
 
 	void ChangeContentTo(int templateType);
-	void ChangeRedColorTo(int redcolor);
+	void ChangeImgTo(int imgType);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -42,6 +45,7 @@ public:
 	CFilmDlg mFilm;
 	COceanDlg mOcean;
 	CSlateDlg mSlate;
+	CProjectorDlg mproj;
 	CWaveDlg mWave;
 	CFishingDlg mFishing;
 	CImageEditDlg mImagedlg;
@@ -52,6 +56,4 @@ public:
 	CTropicalDlg mtropical;
 	CCloudsDlg mclouds;
 	CMountainDlg mmountain;
-
-
 };

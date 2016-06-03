@@ -28,9 +28,9 @@ void CEditorCtrl::ChangeEditDlgTo(int templateType)
 	m_ctrlEdittap.ChangeContentTo(templateType);
 }
 
-void CEditorCtrl::ChangeBalloonDlgTo(int redcolor)
+void CEditorCtrl::ChangeImgDlgTo(int imgType)
 {
-	m_ctrlEdittap.ChangeRedColorTo(redcolor);
+	m_ctrlEdittap.ChangeImgTo(imgType);
 }
 
 void CEditorCtrl::DoDataExchange(CDataExchange* pDX)

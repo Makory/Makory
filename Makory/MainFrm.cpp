@@ -6,6 +6,7 @@
 #include "Makory.h"
 #include "MainFrm.h"
 #include "MakoryView.h"
+#include "ImageTimelineCtrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,6 +24,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
+	ON_COMMAND(ID_EXPORT_TO_VIDEO, &CMainFrame::OnExportToVideo)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -38,10 +40,19 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
+	// retreiving size of image
+	lpbih=AviGen.GetBitmapHeader();
+	//bmBits=new BYTE[lpbih->biSizeImage];
+	bmBits = nullptr;
+
 }
 
 CMainFrame::~CMainFrame()
 {
+	if (bmBits)
+	{
+		delete[] bmBits;
+	}
 }
 
 CEditorCtrl* CMainFrame::GetEditorCtrl()
@@ -249,3 +260,91 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
+
+
+void CMainFrame::OnExportToVideo()
+{
+	CMakoryView* pView = (CMakoryView*)GetActiveView();
+	CImageTimelineCtrl & Timeline = m_paneTimeline.m_ctrlTimeline.m_ctrlImageTimeline;
+	
+	Timeline.InitiateRecording();
+
+	BeginWaitCursor();
+
+	// set 30fps
+	AviGen.SetRate(30);
+	
+	// give info about bitmap
+	AviGen.SetBitmapHeader(pView);		
+	if (bmBits)
+	{
+		delete[] bmBits;
+	}
+	bmBits = new BYTE[lpbih->biWidth * lpbih->biHeight * 3];
+
+	// set filename, extension ".avi" is appended if necessary
+	AviGen.SetFileName(_T("Video"));
+	
+	// allocating memory
+
+	hr=AviGen.InitEngine();
+	if (hr==S_FALSE)
+	{
+			//AfxMessageBox( AviGen.GetLastErrorMessage());
+			// releasing engine and memory
+			AviGen.ReleaseEngine();
+			//delete[] bmBits;
+
+			glReadBuffer(GL_FRONT);
+
+			EndWaitCursor();
+	}
+	else
+	{
+	
+		// reading back buffer
+	//glReadBuffer(GL_BACK);
+	//for(i=0;i<nFrames;i++)
+	//{
+		// render frame
+		Timeline.OnKeyDown(32, 1, 57);		//spacebar
+	//}
+	}
+
+	pView->ExportNum=1;
+}
+
+void CMainFrame::FinishRecording()
+{
+	AviGen.ReleaseEngine();
+	
+	CMakoryView* pView = (CMakoryView*)GetActiveView();
+	pView->ExportNum=0;
+
+	EndWaitCursor();
+}
+
+void CMainFrame::ReadingPixel()
+{
+	//CImageTimelineCtrl & Timeline = m_paneTimeline.m_ctrlTimeline.m_ctrlImageTimeline;
+		// render frame
+		//Timeline.OnKeyDown(32, 1, 57);		//spacebar
+		
+		// Copy from OpenGL to buffer
+		//bmBits = new unsigned char[lpbih->biWidth * lpbih->biHeight * 3];
+		glReadPixels(0,0,lpbih->biWidth,lpbih->biHeight,GL_BGR_EXT,GL_UNSIGNED_BYTE,bmBits); 
+		// send to avi engine
+		hr=AviGen.AddFrame(bmBits);		//중단
+		if (FAILED(hr))
+		{
+			AfxMessageBox( AviGen.GetLastErrorMessage());
+			// releasing engine and memory
+			AviGen.ReleaseEngine();
+			//delete[] bmBits;
+
+			glReadBuffer(GL_FRONT);
+
+			EndWaitCursor();
+		}
+		//delete[] bmBits;
+}

@@ -50,7 +50,6 @@ public:
 	double balloonred;
 	double balloongreen;
 	double balloonblue;
-
 	double balloonx;
 	double balloony;
 	double balloonscale;
@@ -96,6 +95,8 @@ public:
 	double tropicalx;
 	double tropicaly;
 	double tropicalscale;
+
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

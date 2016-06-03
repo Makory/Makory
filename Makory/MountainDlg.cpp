@@ -41,7 +41,11 @@ void CMountainDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CMountainDlg, CDialogEx)
-	ON_EN_CHANGE(IDC_EDIT1, &CMountainDlg::OnEnChangeEdit1)
+	ON_EN_UPDATE(IDC_MOUNTAIN_RED_VALUE, &CMountainDlg::OnEnUpdateMountainRedValue)
+	ON_EN_UPDATE(IDC_MOUNTAIN_GREEN_VALUE, &CMountainDlg::OnEnUpdateMountainGreenValue)
+	ON_EN_UPDATE(IDC_MOUNTAIN_BLUE_VALUE, &CMountainDlg::OnEnUpdateMountainBlueValue)
+	ON_EN_UPDATE(IDC_MOUNTAIN_V_VALUE, &CMountainDlg::OnEnUpdateMountainVEdit)
+	ON_EN_UPDATE(IDC_MOUNTAIN_H_VALUE, &CMountainDlg::OnEnUpdateMountainHEdit)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
@@ -86,15 +90,6 @@ BOOL CMountainDlg::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
-}
-void CMountainDlg::OnEnChangeEdit1()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 
@@ -169,10 +164,10 @@ void CMountainDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //왼쪽으로 이동 
+				dpos = 2*(-0.5+((double)npos * 0.01)); //왼쪽으로 이동 
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //오른쪽으로 이동
+				dpos = 2*(((double)npos * 0.01)-0.5); //오른쪽으로 이동
 			}
 
 			pView->HotAirBalloon.mounty=dpos; //balloony값을 바꿔줌
@@ -190,11 +185,11 @@ void CMountainDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			mMountainHEdit.SetWindowTextA(str); //edit 박스에 슬라이더 값 들어감
 
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //위으로 이동 
+				dpos = 5*(-0.5+((double)npos * 0.01)); //위으로 이동 
 				
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //아래쪽으로 이동
+				dpos = 5*(((double)npos * 0.01)-0.5); //아래쪽으로 이동
 			}
 
 			pView->HotAirBalloon.mountx=dpos; //balloonx값을 바꿔줌
@@ -203,4 +198,165 @@ void CMountainDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 	}
+}
+
+//RED edit
+void CMountainDlg::OnEnUpdateMountainRedValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mMountainRedValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mMountainRedS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+
+		pView->HotAirBalloon.mountred=dpos;//풍선 빨간색값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+}
+
+//green edit
+void CMountainDlg::OnEnUpdateMountainGreenValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mMountainGreenValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mMountainGreenS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.mountgreen=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//blue edit
+void CMountainDlg::OnEnUpdateMountainBlueValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mMountainBlueValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mMountainBlueS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.mountblue=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//수평 edit
+void CMountainDlg::OnEnUpdateMountainHEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mMountainHEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+		mMountainHSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 5*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 5*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.mountx=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+
+
+}
+//수직 Edit
+void CMountainDlg::OnEnUpdateMountainVEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+	
+	if(UpdateData(TRUE)){
+		int ipos;
+		double dpos;
+		CString String;
+		ipos = 0;
+
+		mMountainVEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+
+		mMountainVSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 2*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 2*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.mounty=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+	
 }

@@ -10,6 +10,7 @@
 #include "BmpToArray.h"
 #include "ImageTimelineCtrl.h"
 
+class CMainFrame;
 class CMakoryDoc;
 
 class CMakoryView : public CView
@@ -58,15 +59,26 @@ public:
 	Ocean Ocean;
 	BmpToArray BmpToArray;
 	CImageTimelineCtrl* ImageTimeline;
+	CMainFrame* MainFrm;
 	
 	int SelectTemplate;
 	CString SelectImage;
-	
+
 	double x;
 	double y;
+	double y1;
 	double z;
+	double r;
+	double r1;
+	double time;
 
+	double filmimgscale;
+	double projimgscale;
+	double slateimgscale;
+	double spacescale;
+	double fishingimgscale;
 	int IsItKey;
+	int ExportNum;
 
 // 특성입니다.
 public:
@@ -109,6 +121,8 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	public:
+
 };
 
 #ifndef _DEBUG  // MakoryView.cpp의 디버그 버전

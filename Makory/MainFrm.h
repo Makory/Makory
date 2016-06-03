@@ -7,19 +7,22 @@
 #include "timelinepane.h"
 #include "BalloonDlg.h"
 #include "HotAirBalloon.h"
+#include "AVIGenerator.h"
 
 class CMainFrame : public CFrameWndEx
 {
 	
 protected: // serialization에서만 만들어집니다.
-	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
 // 특성입니다.
 public:
+	CMainFrame();
 
 	CEditorCtrl* GetEditorCtrl();
 	void ConnectTimelineToMainView();
+
+	void FinishRecording();
 
 public:
 
@@ -47,12 +50,20 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
-	DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP();
+
+	LPBITMAPINFOHEADER lpbih;
+	BYTE* bmBits;	
+	HRESULT hr;
 
 public:
+	CAVIGenerator AviGen;
+	//CProgressBar Bar;
 	CEditorPane m_paneEditor;
 	CTimelinePane m_paneTimeline;
 	
+	afx_msg void OnExportToVideo();
+	afx_msg void ReadingPixel();
 };
 
 

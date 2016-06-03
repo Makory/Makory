@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CSliderCtrl mCloudsRedS;
 	CSliderCtrl mCloudsGreenS;
@@ -35,5 +34,12 @@ public:
 	CEdit mCloudsBlueValue;
 	CEdit mCloudsVEdit;
 	CEdit mCloudsHEdit;
+
+	afx_msg void OnEnUpdateCloudsRedValue();
+	afx_msg void OnEnUpdateCloudsGreenValue();
+	afx_msg void OnEnUpdateCloudsBlueValue();
+	afx_msg void OnEnUpdateCloudsVEdit();
+	afx_msg void OnEnUpdateCloudsHEdit();
+
 	double dpos;
 };

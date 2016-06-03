@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CSliderCtrl mTropicalRedS;
 	CSliderCtrl mTropicalGreenS;
@@ -35,5 +34,12 @@ public:
 	CEdit mTropicalBlueValue;
 	CEdit mTropicalVEdit;
 	CEdit mTropicalHEdit;
+
+	afx_msg void OnEnUpdateTropicalRedValue();
+	afx_msg void OnEnUpdateTropicalGreenValue();
+	afx_msg void OnEnUpdateTropicalBlueValue();
+	afx_msg void OnEnUpdateTropicalVEdit();
+	afx_msg void OnEnUpdateTropicalHEdit();
+
 	double dpos;
 };

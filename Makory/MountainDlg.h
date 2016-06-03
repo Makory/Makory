@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CSliderCtrl mMountainRedS;
 	CSliderCtrl mMountainGreenS;
@@ -35,5 +34,14 @@ public:
 	CEdit mMountainBlueValue;
 	CEdit mMountainVEdit;
 	CEdit mMountainHEdit;
+
+	
+	afx_msg void OnEnUpdateMountainRedValue();
+	afx_msg void OnEnUpdateMountainGreenValue();
+	afx_msg void OnEnUpdateMountainBlueValue();
+	afx_msg void OnEnUpdateMountainVEdit();
+	afx_msg void OnEnUpdateMountainHEdit();
+
+
 	double dpos;
 };

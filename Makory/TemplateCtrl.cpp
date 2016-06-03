@@ -46,9 +46,9 @@ BOOL CTemplateCtrl::OnInitDialog()
 	hRoot = m_ctrlTree.InsertItem("템플릿", 0, 0, TVI_ROOT, TVI_LAST);
 	
 	//2레벨 초기화
-	HTREEITEM  htemplate[6];
-	CString TemplateName[] = {"열기구", "필름", "Ocean", "Party", "낙서", "편지"};
-	for(int i=0; i<6; i++) {
+	HTREEITEM  htemplate[3];
+	CString TemplateName[] = {"열기구", "필름", "Ocean"/*, "Party", "낙서", "편지"*/};
+	for(int i=0; i<3; i++) {
 		htemplate[i]=m_ctrlTree.InsertItem(TemplateName[i], 1, 1, hRoot, TVI_LAST);
 	}
 
@@ -65,13 +65,14 @@ BOOL CTemplateCtrl::OnInitDialog()
 	for(int i=0; i<3; i++) {
 	m_ctrlTree.InsertItem(Ocean[i], 2, 2, htemplate[2], TVI_LAST);
 	}
+	/*
 	CString Party[] = {"미러볼", "음파", "악보"}; 
 	for(int i=0; i<3; i++) {
 	m_ctrlTree.InsertItem(Party[i], 2, 2, htemplate[3], TVI_LAST);
 	}
 	m_ctrlTree.InsertItem("낙서", 2, 2, htemplate[4], TVI_LAST);
 	m_ctrlTree.InsertItem("편지", 2, 2, htemplate[5], TVI_LAST);
-	
+	*/
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }

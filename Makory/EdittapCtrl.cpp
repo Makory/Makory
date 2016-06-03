@@ -39,6 +39,8 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		msunset.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+
 	}
 	else if (2 == templateType)
 	{
@@ -56,12 +58,15 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		msunset.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+
 	}
 	else if (3 == templateType)
 	{
 
 		mfullmoon.ShowWindow(SW_SHOW);
 		// hide others here
+		mmountain.ShowWindow(SW_HIDE);
 		mBalloon.ShowWindow(SW_HIDE);
 		mFilm.ShowWindow(SW_HIDE);
 		mSlate.ShowWindow(SW_HIDE);
@@ -70,6 +75,11 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		mImagedlg.ShowWindow(SW_HIDE);
 		mdarkdlg.ShowWindow(SW_HIDE);
 		mFishing.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+
 	}
 	else if (4 == templateType)
 	{
@@ -88,6 +98,8 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		msunset.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+	
 	}
 
 	else if (5 == templateType)
@@ -107,6 +119,8 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		mmountain.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		
 	}
 
 	else if (6 == templateType)
@@ -126,6 +140,8 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		mmountain.ShowWindow(SW_HIDE);
 		msunset.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		
 
 	}
 	else if (7 == templateType)
@@ -145,11 +161,130 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		mmountain.ShowWindow(SW_HIDE);
 		msunset.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		
+	}
+	else if (8 == templateType) //영사기 
+	{
+		mproj.ShowWindow(SW_SHOW);
+		// hide others here
+		mBalloon.ShowWindow(SW_HIDE);
+		mFilm.ShowWindow(SW_HIDE);
+		mSlate.ShowWindow(SW_HIDE);
+		mWave.ShowWindow(SW_HIDE);
+		mOcean.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+		mFishing.ShowWindow(SW_HIDE);
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		
 	}
 
+	else if (9 == templateType) //필름 
+	{
+		mFilm.ShowWindow(SW_SHOW);
+		// hide others here
+		mBalloon.ShowWindow(SW_HIDE);
+		mSlate.ShowWindow(SW_HIDE);
+		mWave.ShowWindow(SW_HIDE);
+		mOcean.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+		mFishing.ShowWindow(SW_HIDE);
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+	
+	}
+	else if (10 == templateType) //슬레이트 
+	{
+		mSlate.ShowWindow(SW_SHOW);
+		// hide others here
+		
+		mFilm.ShowWindow(SW_HIDE);
+		mBalloon.ShowWindow(SW_HIDE);
+		mWave.ShowWindow(SW_HIDE);
+		mOcean.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+		mFishing.ShowWindow(SW_HIDE);
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+	
+	}
+	else if (11 == templateType) //파도
+	{
+		mWave.ShowWindow(SW_SHOW);
+		// hide others here
+		
+		mFilm.ShowWindow(SW_HIDE);
+		mBalloon.ShowWindow(SW_HIDE);
+		mOcean.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+		mFishing.ShowWindow(SW_HIDE);
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		mSlate.ShowWindow(SW_HIDE);
 
-
-
+	
+	}
+	else if (12 == templateType) //바다속
+	{
+		mOcean.ShowWindow(SW_SHOW);
+		// hide others here
+		
+		mFilm.ShowWindow(SW_HIDE);
+		mBalloon.ShowWindow(SW_HIDE);
+		mWave.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+		mFishing.ShowWindow(SW_HIDE);
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		mSlate.ShowWindow(SW_HIDE);
+	
+	}
+	else if (13 == templateType) //낚시
+	{
+		mFishing.ShowWindow(SW_SHOW);
+		// hide others here
+		
+		mFilm.ShowWindow(SW_HIDE);
+		mBalloon.ShowWindow(SW_HIDE);
+		mWave.ShowWindow(SW_HIDE);
+		mOcean.ShowWindow(SW_HIDE);
+		mImagedlg.ShowWindow(SW_HIDE);
+		mdarkdlg.ShowWindow(SW_HIDE);
+	
+		mfullmoon.ShowWindow(SW_HIDE);
+		mmountain.ShowWindow(SW_HIDE);
+		msunset.ShowWindow(SW_HIDE);
+		mclouds.ShowWindow(SW_HIDE);
+		mtropical.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+		mSlate.ShowWindow(SW_HIDE);
+	
+	}
 	else if (100 == templateType)
 	{
 		mImagedlg.ShowWindow(SW_SHOW);
@@ -168,6 +303,8 @@ void CEdittapCtrl::ChangeContentTo(int templateType)
 		msunset.ShowWindow(SW_HIDE);
 		mtropical.ShowWindow(SW_HIDE);
 		mclouds.ShowWindow(SW_HIDE);
+		mproj.ShowWindow(SW_HIDE);
+	
 	}
 
 }
@@ -213,6 +350,7 @@ BOOL CEdittapCtrl::OnInitDialog()
 	mtropical.Create(CTropicalDlg::IDD, this);
 	mclouds.Create(CCloudsDlg::IDD, this);
 	mmountain.Create(CMountainDlg::IDD, this);
+	mproj.Create(CProjectorDlg::IDD, this);
 
 	CRect rect;
 	GetClientRect(&rect);
@@ -229,6 +367,8 @@ BOOL CEdittapCtrl::OnInitDialog()
 	mtropical.MoveWindow(&rect);
 	mclouds.MoveWindow(&rect);
 	mmountain.MoveWindow(&rect);
+	mproj.MoveWindow(&rect);
+
 
 	//mBalloon.ShowWindow(SW_SHOW);
 	mFilm.ShowWindow(SW_HIDE); //왜 이걸 해줘야 처음에 안보일까요.....풍선은 안해도 안보이는데
@@ -243,12 +383,13 @@ BOOL CEdittapCtrl::OnInitDialog()
 	mtropical.ShowWindow(SW_HIDE);
 	mclouds.ShowWindow(SW_HIDE);
 	mmountain.ShowWindow(SW_HIDE);
+	mproj.ShowWindow(SW_HIDE);
 
 	return TRUE;
 }
 
-void CEdittapCtrl::ChangeRedColorTo(int redcolor){
+void CEdittapCtrl::ChangeImgTo(int imgType){
 
-	mBalloon.ChangeColorTo(redcolor);
+	mImagedlg.ChangeImgTo(imgType);
 
 }

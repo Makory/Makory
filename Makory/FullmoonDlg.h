@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CSliderCtrl mFullmoonRedS;
 	CSliderCtrl mFullmoonGreenS;
@@ -35,5 +34,12 @@ public:
 	CEdit mFullmoonBlueValue;
 	CEdit mFullmoonVEdit;
 	CEdit mFullmoonHEdit;
+
+	afx_msg void OnEnUpdateFullmoonRedValue();
+	afx_msg void OnEnUpdateFullmoonGreenValue();
+	afx_msg void OnEnUpdateFullmoonBlueValue();
+	afx_msg void OnEnUpdateFullmoonVEdit();
+	afx_msg void OnEnUpdateFullmoonHEdit();
+
 	double dpos;
 };

@@ -16,7 +16,7 @@ public:
 	virtual ~CEditorCtrl();
 
 	void ChangeEditDlgTo(int templateType);
-	void ChangeBalloonDlgTo(int redcolor);
+	void ChangeImgDlgTo(int imgType);
 
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_DIALOG_EDITOR };

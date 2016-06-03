@@ -41,7 +41,11 @@ void CTropicalDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTropicalDlg, CDialogEx)
-	ON_EN_CHANGE(IDC_EDIT1, &CTropicalDlg::OnEnChangeEdit1)
+	ON_EN_UPDATE(IDC_TROPICAL_RED_VALUE, &CTropicalDlg::OnEnUpdateTropicalRedValue)
+	ON_EN_UPDATE(IDC_TROPICAL_GREEN_VALUE, &CTropicalDlg::OnEnUpdateTropicalGreenValue)
+	ON_EN_UPDATE(IDC_TROPICAL_BLUE_VALUE, &CTropicalDlg::OnEnUpdateTropicalBlueValue)
+	ON_EN_UPDATE(IDC_TROPICAL_V_VALUE, &CTropicalDlg::OnEnUpdateTropicalVEdit)
+	ON_EN_UPDATE(IDC_TROPICAL_H_VALUE, &CTropicalDlg::OnEnUpdateTropicalHEdit)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
@@ -87,16 +91,6 @@ BOOL CTropicalDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-void CTropicalDlg::OnEnChangeEdit1()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
-
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
-
 
 void CTropicalDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
@@ -169,10 +163,10 @@ void CTropicalDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //왼쪽으로 이동 
+				dpos = 2*(-0.5+((double)npos * 0.01)); //왼쪽으로 이동 
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //오른쪽으로 이동
+				dpos = 2*(((double)npos * 0.01)-0.5); //오른쪽으로 이동
 			}
 
 			pView->HotAirBalloon.tropicaly=dpos; //balloony값을 바꿔줌
@@ -190,11 +184,11 @@ void CTropicalDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			mTropicalHEdit.SetWindowTextA(str); //edit 박스에 슬라이더 값 들어감
 
 			if(npos <= 50){ //슬라이더가 50이하일때
-				dpos = -0.5+((double)npos * 0.01); //위으로 이동 
+				dpos = 5*(-0.5+((double)npos * 0.01)); //위으로 이동 
 				
 			} 
 			else if(npos >= 50){  //슬라이더가 50이상일때
-				dpos = ((double)npos * 0.01)-0.5; //아래쪽으로 이동
+				dpos = 5*(((double)npos * 0.01)-0.5); //아래쪽으로 이동
 			}
 
 			pView->HotAirBalloon.tropicalx=dpos; //balloonx값을 바꿔줌
@@ -204,3 +198,170 @@ void CTropicalDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 	}
 }
+
+
+
+//RED edit
+void CTropicalDlg::OnEnUpdateTropicalRedValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mTropicalRedValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mTropicalRedS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+
+		pView->HotAirBalloon.tropicalred=dpos;//풍선 빨간색값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+}
+
+//green edit
+void CTropicalDlg::OnEnUpdateTropicalGreenValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mTropicalGreenValue.GetWindowTextA(String);
+		ipos =_ttoi(String);
+		mTropicalGreenS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.tropicalgreen=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//blue edit
+void CTropicalDlg::OnEnUpdateTropicalBlueValue()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mTropicalBlueValue.GetWindowTextA(String);
+		ipos = _ttoi(String);
+		mTropicalBlueS.SetPos(ipos);
+		dpos = (double)ipos * 0.00392156; //슬라이더는 소숫점이 사용이 안됨
+		pView->HotAirBalloon.tropicalblue=dpos;//풍선 빨간색값을 바꿔줌
+
+		pView->Invalidate(FALSE);
+	}
+}
+
+//수평 edit
+void CTropicalDlg::OnEnUpdateTropicalHEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+
+	if(UpdateData(TRUE)){
+
+		int ipos;
+		double dpos;
+		CString String;
+
+		mTropicalHEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+		mTropicalHSlider.SetPos(ipos);
+
+		if(ipos <= 50){ //슬라이더가 50이하일때
+		
+			dpos = 5*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+			
+		} 
+		else if(ipos >= 50){  //슬라이더가 50이상일때
+			dpos = 5*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+		}
+
+		pView->HotAirBalloon.tropicalx=dpos; //balloony값을 바꿔줌
+		pView->Invalidate(FALSE);
+	}
+
+
+}
+//수직 Edit
+void CTropicalDlg::OnEnUpdateTropicalVEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하여, IParam 마스크에 OR 연산하여 설정된 ENM_SCROLL 플래그를 지정하여 컨트롤에 EM_SETEVENTMASK 메시지를 보내지 않으면
+	// 편집 컨트롤이 바뀐 텍스트를 표시하려고 함을 나타냅니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();            //View호출
+	CMakoryView* pView = (CMakoryView*)pFrame->GetActiveView();      //View호출
+	
+	if(UpdateData(TRUE)){
+		int ipos;
+		double dpos;
+		CString String;
+		ipos = 0;
+
+		mTropicalVEdit.GetWindowTextA(String);
+
+		ipos = _ttoi(String)+50;
+
+		mTropicalVSlider.SetPos(ipos);
+	
+			if(ipos <= 50){ //슬라이더가 50이하일때
+
+				dpos = 2*(-0.5+((double)ipos * 0.01)); //왼쪽으로 이동 
+
+			} 
+
+			else if(ipos >= 50){  //슬라이더가 50이상일때
+				dpos = 2*(((double)ipos * 0.01)-0.5); //오른쪽으로 이동
+			}
+		
+			pView->HotAirBalloon.tropicaly=dpos; //balloony값을 바꿔줌
+			pView->Invalidate(FALSE);
+		
+		
+	}
+	
+}
+
